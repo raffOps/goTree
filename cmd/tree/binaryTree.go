@@ -11,7 +11,7 @@ type BinaryTree[T Node] struct {
 	value               T
 }
 
-func NewBinaryTree[T cmp.Ordered](leftNode, rightNode *BinaryTree[T], value T) *BinaryTree[T] {
+func NewNodeTree[T Node](leftNode, rightNode *BinaryTree[T], value T) *BinaryTree[T] {
 	tree_ := BinaryTree[T]{leftNode: leftNode, rightNode: rightNode, value: value}
 	return &tree_
 }
@@ -27,15 +27,15 @@ func (t *BinaryTree[T]) InsertNewNode(newValue T) {
 	} else {
 		comparison := cmp.Compare(newValue, t.value)
 		if comparison == -1 && t.leftNode == nil { // less than, leaf node
-			leftNode := NewBinaryTree(nil, nil, newValue)
+			leftNode := NewNodeTree(nil, nil, newValue)
 			t.leftNode = leftNode
 		} else if comparison == -1 && t.leftNode != nil { // less than, not leaf node
-			(*t.leftNode).InsertNewNode(newValue)
+			t.leftNode.InsertNewNode(newValue)
 		} else if comparison > -1 && t.rightNode == nil { // greater of equal than, leaf node
-			rightNode := NewBinaryTree(nil, nil, newValue)
+			rightNode := NewNodeTree(nil, nil, newValue)
 			t.rightNode = rightNode
 		} else if comparison > -1 && t.rightNode != nil { // greater of equal than, not leaf node
-			(*t.rightNode).InsertNewNode(newValue)
+			t.rightNode.InsertNewNode(newValue)
 		}
 	}
 }
