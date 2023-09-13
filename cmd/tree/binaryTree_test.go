@@ -37,46 +37,12 @@ func TestInsertNewNodeToTheRight(t *testing.T) {
 	}
 }
 
-type insertNodesTestCase[T Node] struct {
+type BTreeTestCase[T Node] struct {
 	input []T
-	want  *BinaryTree[T]
+	tree  *BinaryTree[T]
 }
 
-func getInsertStringNodesTestCases() []insertNodesTestCase[string] {
-	valueListTestCase1 := []string{"Noah", "Oliver", "Eli", "James", "Sophie", "Will", "Omar", "Rachel"}
-	caseNodeJames := NewNodeTree(nil, nil, "James")
-	caseNodeEli := NewNodeTree(nil, caseNodeJames, "Eli")
-
-	caseNodeRachel := NewNodeTree(nil, nil, "Rachel")
-	caseNodeOmar := NewNodeTree(nil, caseNodeRachel, "Omar")
-	caseNodeWill := NewNodeTree(nil, nil, "Will")
-	caseNodeSophie := NewNodeTree(caseNodeOmar, caseNodeWill, "Sophie")
-	caseNodeOliver := NewNodeTree(nil, caseNodeSophie, "Oliver")
-	treeTestCase1 := NewNodeTree(caseNodeEli, caseNodeOliver, "Noah")
-
-	insertNodeTestCase1 := insertNodesTestCase[string]{input: valueListTestCase1, want: treeTestCase1}
-
-	insertNodeTests := []insertNodesTestCase[string]{
-		insertNodeTestCase1,
-	}
-	return insertNodeTests
-}
-
-func TestInsertStringNodes(t *testing.T) {
-	insertNodeTests := getInsertStringNodesTestCases()
-	for _, testCase := range insertNodeTests {
-		tree_ := NewNodeTree(nil, nil, "")
-		for _, value := range testCase.input {
-			tree_.InsertNewNode(value)
-		}
-		if reflect.DeepEqual(testCase.want, tree_) == false {
-			t.Fail()
-		}
-		tree_ = nil
-	}
-}
-
-func getInsertIntegerNodesTestCases() []insertNodesTestCase[int] {
+func getIntegerNodesTestCases() []BTreeTestCase[int] {
 	valueListTestCase1 := []int{25, 22, 40, 30, 45, 27, 20, 21, 48}
 
 	case1Node21 := NewNodeTree(nil, nil, 21)
@@ -89,7 +55,7 @@ func getInsertIntegerNodesTestCases() []insertNodesTestCase[int] {
 	case1node40 := NewNodeTree(case1Node30, case1Node45, 40)
 	treeTestCase1 := NewNodeTree(case1Node22, case1node40, 25)
 
-	insertNodeTestCase1 := insertNodesTestCase[int]{input: valueListTestCase1, want: treeTestCase1}
+	insertNodeTestCase1 := BTreeTestCase[int]{input: valueListTestCase1, tree: treeTestCase1}
 
 	// test case 2
 	valueListTestCase2 := []int{40, 25, 20, 30, 45, 27, 22, 21, 48}
@@ -103,24 +69,64 @@ func getInsertIntegerNodesTestCases() []insertNodesTestCase[int] {
 	case2Node45 := NewNodeTree(nil, case2Node48, 45)
 	treeTestCase2 := NewNodeTree(case2Node25, case2Node45, 40)
 
-	insertNodeTestCase2 := insertNodesTestCase[int]{valueListTestCase2, treeTestCase2}
+	insertNodeTestCase2 := BTreeTestCase[int]{input: valueListTestCase2, tree: treeTestCase2}
 
 	// final list
-	insertNodeTests := []insertNodesTestCase[int]{
+	insertNodeTests := []BTreeTestCase[int]{
 		insertNodeTestCase1,
 		insertNodeTestCase2,
 	}
 	return insertNodeTests
 }
 
+func getStringNodesTestCases() ([]BTreeTestCase[string], error) {
+	valueListTestCase1 := []string{"Noah", "Oliver", "Eli", "James", "Sophie", "Will", "Omar", "Rachel"}
+	caseNodeJames := NewNodeTree(nil, nil, "James")
+	caseNodeEli := NewNodeTree(nil, caseNodeJames, "Eli")
+
+	caseNodeRachel := NewNodeTree(nil, nil, "Rachel")
+	caseNodeOmar := NewNodeTree(nil, caseNodeRachel, "Omar")
+	caseNodeWill := NewNodeTree(nil, nil, "Will")
+	caseNodeSophie := NewNodeTree(caseNodeOmar, caseNodeWill, "Sophie")
+	caseNodeOliver := NewNodeTree(nil, caseNodeSophie, "Oliver")
+	treeTestCase1 := NewNodeTree(caseNodeEli, caseNodeOliver, "Noah")
+
+	insertNodeTestCase1 := BTreeTestCase[string]{
+		input: valueListTestCase1,
+		tree:  treeTestCase1,
+	}
+
+	insertNodeTests := []BTreeTestCase[string]{
+		insertNodeTestCase1,
+	}
+	return insertNodeTests, nil
+}
+
+func TestInsertStringNodes(t *testing.T) {
+	BTreeTestCases, err := getStringNodesTestCases()
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+	for _, testCase := range BTreeTestCases {
+		tree_ := NewNodeTree(nil, nil, "")
+		for _, value := range testCase.input {
+			tree_.InsertNewNode(value)
+		}
+		if reflect.DeepEqual(testCase.tree, tree_) == false {
+			t.Fail()
+		}
+		tree_ = nil
+	}
+}
+
 func TestInsertIntegerNodes(t *testing.T) {
-	insertNodeTests := getInsertIntegerNodesTestCases()
-	for _, testCase := range insertNodeTests {
+	BTreeTestCases := getIntegerNodesTestCases()
+	for _, testCase := range BTreeTestCases {
 		tree_ := NewNodeTree(nil, nil, 0)
 		for _, value := range testCase.input {
 			tree_.InsertNewNode(value)
 		}
-		if reflect.DeepEqual(testCase.want, tree_) == false {
+		if reflect.DeepEqual(testCase.tree, tree_) == false {
 			t.Fail()
 		}
 		tree_ = nil

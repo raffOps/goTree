@@ -1,6 +1,8 @@
 package tree
 
-import "cmp"
+import (
+	"cmp"
+)
 
 type Node interface {
 	cmp.Ordered
