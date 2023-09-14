@@ -42,7 +42,7 @@ type BTreeTestCase[T Node] struct {
 	tree  *BinaryTree[T]
 }
 
-func getIntegerNodesTestCases() []BTreeTestCase[int] {
+func getIntegerNodesTestCases() ([]BTreeTestCase[int], error) {
 	valueListTestCase1 := []int{25, 22, 40, 30, 45, 27, 20, 21, 48}
 
 	case1Node21 := NewNodeTree(nil, nil, 21)
@@ -55,7 +55,7 @@ func getIntegerNodesTestCases() []BTreeTestCase[int] {
 	case1node40 := NewNodeTree(case1Node30, case1Node45, 40)
 	treeTestCase1 := NewNodeTree(case1Node22, case1node40, 25)
 
-	insertNodeTestCase1 := BTreeTestCase[int]{input: valueListTestCase1, tree: treeTestCase1}
+	testCase1 := BTreeTestCase[int]{input: valueListTestCase1, tree: treeTestCase1}
 
 	// test case 2
 	valueListTestCase2 := []int{40, 25, 20, 30, 45, 27, 22, 21, 48}
@@ -69,14 +69,14 @@ func getIntegerNodesTestCases() []BTreeTestCase[int] {
 	case2Node45 := NewNodeTree(nil, case2Node48, 45)
 	treeTestCase2 := NewNodeTree(case2Node25, case2Node45, 40)
 
-	insertNodeTestCase2 := BTreeTestCase[int]{input: valueListTestCase2, tree: treeTestCase2}
+	testCase2 := BTreeTestCase[int]{input: valueListTestCase2, tree: treeTestCase2}
 
 	// final list
-	insertNodeTests := []BTreeTestCase[int]{
-		insertNodeTestCase1,
-		insertNodeTestCase2,
+	testCases := []BTreeTestCase[int]{
+		testCase1,
+		testCase2,
 	}
-	return insertNodeTests
+	return testCases, nil
 }
 
 func getStringNodesTestCases() ([]BTreeTestCase[string], error) {
@@ -91,15 +91,15 @@ func getStringNodesTestCases() ([]BTreeTestCase[string], error) {
 	caseNodeOliver := NewNodeTree(nil, caseNodeSophie, "Oliver")
 	treeTestCase1 := NewNodeTree(caseNodeEli, caseNodeOliver, "Noah")
 
-	insertNodeTestCase1 := BTreeTestCase[string]{
+	testCase1 := BTreeTestCase[string]{
 		input: valueListTestCase1,
 		tree:  treeTestCase1,
 	}
 
-	insertNodeTests := []BTreeTestCase[string]{
-		insertNodeTestCase1,
+	testCase := []BTreeTestCase[string]{
+		testCase1,
 	}
-	return insertNodeTests, nil
+	return testCase, nil
 }
 
 func TestInsertStringNodes(t *testing.T) {
@@ -120,7 +120,7 @@ func TestInsertStringNodes(t *testing.T) {
 }
 
 func TestInsertIntegerNodes(t *testing.T) {
-	BTreeTestCases := getIntegerNodesTestCases()
+	BTreeTestCases, _ := getIntegerNodesTestCases()
 	for _, testCase := range BTreeTestCases {
 		tree_ := NewNodeTree(nil, nil, 0)
 		for _, value := range testCase.input {
