@@ -1,6 +1,7 @@
-package tree
+package redBlackTree
 
 import (
+	"cmp"
 	"reflect"
 	"testing"
 )
@@ -19,7 +20,7 @@ func TestInsertNewNodeToTheLeft(t *testing.T) {
 	rootNode := NewNodeTree(nil, nil, 3)
 
 	newValue := 1
-	rootNode.InsertNewNode(newValue)
+	rootNode.InsertNode(newValue)
 	got := (*rootNode.leftNode).GetValue()
 	if got != newValue {
 		t.Errorf("got %d, wanted %d", got, newValue)
@@ -30,16 +31,16 @@ func TestInsertNewNodeToTheRight(t *testing.T) {
 	rootNode := NewNodeTree(nil, nil, 3)
 
 	newValue := 5
-	rootNode.InsertNewNode(newValue)
+	rootNode.InsertNode(newValue)
 	got := (*rootNode.rightNode).GetValue()
 	if got != newValue {
 		t.Errorf("got %d, wanted %d", got, newValue)
 	}
 }
 
-type BTreeTestCase[T Node] struct {
+type BTreeTestCase[T cmp.Ordered] struct {
 	input []T
-	tree  *BinaryTree[T]
+	tree  *RedBlackTree[T]
 }
 
 func getIntegerNodesTestCases() ([]BTreeTestCase[int], error) {
@@ -103,14 +104,14 @@ func getStringNodesTestCases() ([]BTreeTestCase[string], error) {
 }
 
 func TestInsertStringNodes(t *testing.T) {
-	BTreeTestCases, err := getStringNodesTestCases()
+	testCases, err := getStringNodesTestCases()
 	if err != nil {
 		t.Errorf("%s", err)
 	}
-	for _, testCase := range BTreeTestCases {
+	for _, testCase := range testCases {
 		tree_ := NewNodeTree(nil, nil, "")
 		for _, value := range testCase.input {
-			tree_.InsertNewNode(value)
+			tree_.InsertNode(value)
 		}
 		if reflect.DeepEqual(testCase.tree, tree_) == false {
 			t.Fail()
@@ -120,15 +121,55 @@ func TestInsertStringNodes(t *testing.T) {
 }
 
 func TestInsertIntegerNodes(t *testing.T) {
-	BTreeTestCases, _ := getIntegerNodesTestCases()
-	for _, testCase := range BTreeTestCases {
+	testCases, _ := getIntegerNodesTestCases()
+	for _, testCase := range testCases {
 		tree_ := NewNodeTree(nil, nil, 0)
 		for _, value := range testCase.input {
-			tree_.InsertNewNode(value)
+			tree_.InsertNode(value)
 		}
 		if reflect.DeepEqual(testCase.tree, tree_) == false {
 			t.Fail()
 		}
 		tree_ = nil
+	}
+}
+
+func TestSearchStringValue(t *testing.T) {
+	testCases, _ := getStringNodesTestCases()
+	testCase := testCases[0]
+	value := testCase.tree.rightNode.rightNode.rightNode.GetValue()
+	got := testCase.tree.SearchValue(value)
+	if got == false {
+		t.Fail()
+	}
+}
+
+func TestSearchStringValueNonExistent(t *testing.T) {
+	testCases, _ := getStringNodesTestCases()
+	testCase := testCases[0]
+	value := "foo"
+	got := testCase.tree.SearchValue(value)
+	if got == true {
+		t.Fail()
+	}
+}
+
+func TestSearchIntegerValueNonExistent(t *testing.T) {
+	testCases, _ := getIntegerNodesTestCases()
+	testCase := testCases[0]
+	value := testCase.tree.leftNode.leftNode.rightNode.GetValue()
+	got := testCase.tree.SearchValue(value)
+	if got == false {
+		t.Fail()
+	}
+}
+
+func TestSearchIntegerValue(t *testing.T) {
+	testCases, _ := getIntegerNodesTestCases()
+	testCase := testCases[0]
+	value := 9999
+	got := testCase.tree.SearchValue(value)
+	if got == true {
+		t.Fail()
 	}
 }
