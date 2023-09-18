@@ -82,15 +82,15 @@ func getIntegerNodesTestCases() ([]BTreeTestCase[int], error) {
 
 func getStringNodesTestCases() ([]BTreeTestCase[string], error) {
 	valueListTestCase1 := []string{"Noah", "Oliver", "Eli", "James", "Sophie", "Will", "Omar", "Rachel"}
-	caseNodeJames := NewNodeTree(nil, nil, "James")
-	caseNodeEli := NewNodeTree(nil, caseNodeJames, "Eli")
+	caseNodeJames := RedBlackTree[string]{value: "James"}
+	caseNodeEli := RedBlackTree[string]{rightNode: &caseNodeJames, value: "Eli"}
 
 	caseNodeRachel := NewNodeTree(nil, nil, "Rachel")
 	caseNodeOmar := NewNodeTree(nil, caseNodeRachel, "Omar")
 	caseNodeWill := NewNodeTree(nil, nil, "Will")
 	caseNodeSophie := NewNodeTree(caseNodeOmar, caseNodeWill, "Sophie")
 	caseNodeOliver := NewNodeTree(nil, caseNodeSophie, "Oliver")
-	treeTestCase1 := NewNodeTree(caseNodeEli, caseNodeOliver, "Noah")
+	treeTestCase1 := NewNodeTree(&caseNodeEli, caseNodeOliver, "Noah")
 
 	testCase1 := BTreeTestCase[string]{
 		input: valueListTestCase1,

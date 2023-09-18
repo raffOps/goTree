@@ -2,10 +2,7 @@ package binarySearchTree
 
 import "cmp"
 
-type Node interface {
-	cmp.Ordered
-}
-
-type BinarySearchTree[T Node] interface {
+type BinarySearchTree[T cmp.Ordered] interface {
+	GetValue() T
 	OptimallyInsertNode(T)
 }

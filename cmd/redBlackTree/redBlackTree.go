@@ -2,15 +2,14 @@ package redBlackTree
 
 import (
 	"cmp"
-	"gotree/cmd/binarySearchTree"
 )
 
-type RedBlackTree[T binarySearchTree.Node] struct {
+type RedBlackTree[T cmp.Ordered] struct {
 	leftNode, rightNode *RedBlackTree[T]
 	value               T
 }
 
-func NewNodeTree[T binarySearchTree.Node](leftNode, rightNode *RedBlackTree[T], value T) *RedBlackTree[T] {
+func NewNodeTree[T cmp.Ordered](leftNode, rightNode *RedBlackTree[T], value T) *RedBlackTree[T] {
 	tree_ := &RedBlackTree[T]{leftNode: leftNode, rightNode: rightNode, value: value}
 	return tree_
 }
