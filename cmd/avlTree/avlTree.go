@@ -23,24 +23,16 @@ func (t *AVLTree[T]) GetRootValue() T {
 	return t.value
 }
 
-func (t *AVLTree[T]) setLeftNode(tree *AVLTree[T]) {
-	t.leftNode = tree
+func (t *AVLTree[T]) setHeight(height int64) {
+	t.height = height
 }
 
-func (t *AVLTree[T]) setRightNode(tree *AVLTree[T]) {
-	t.rightNode = tree
-}
-
-func (t *AVLTree[T]) GetHeight() int64 {
-	if t.IsEmpty() {
+func GetHeight[T cmp.Ordered](tree *AVLTree[T]) int64 {
+	if tree == nil {
 		return -1
 	}
-	return t.height
+	return tree.height
 }
-
-//func (t *AVLTree[T]) setHeight(height int64) {
-//	t.height = height
-//}
 
 func maxHeight(x, y int64) int64 {
 	if x > y {
@@ -51,11 +43,11 @@ func maxHeight(x, y int64) int64 {
 
 func rotateLeft[T cmp.Ordered](tree *AVLTree[T]) *AVLTree[T] {
 	leftTree := tree.leftNode
-	tree.setLeftNode(leftTree.rightNode)
-	leftTree.setRightNode(tree)
-	//var temp int64 = maxHeight(tree.leftNode.GetHeight(), tree.rightNode.GetHeight()) + 1
-	//tree.setHeight(temp)
-	//leftTree.setHeight(maxHeight(leftTree.leftNode.GetHeight(), tree.GetHeight()) + 1)
+	tree.leftNode = leftTree.rightNode
+	leftTree.rightNode = tree
+
+	tree.setHeight(maxHeight(GetHeight(tree.leftNode), GetHeight(tree.rightNode)) + 1)
+	leftTree.setHeight(maxHeight(GetHeight(tree.rightNode), GetHeight(tree)) + 1)
 	return leftTree
 }
 

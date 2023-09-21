@@ -13,21 +13,40 @@ type rotateTestCase[T cmp.Ordered] struct {
 
 func getRotateLeftTestCases() []rotateTestCase[int] {
 	var (
-		testCases                                []rotateTestCase[int]
-		node1, node2, node3                      *AVLTree[int]
-		rotatedNode1, rotatedNode2, rotatedNode3 *AVLTree[int]
+		testCases                                                                                       []rotateTestCase[int]
+		node0, node1, node2, node3, node4, node5, input                                                 *AVLTree[int]
+		rotatedNode0, rotatedNode1, rotatedNode2, rotatedNode3, rotatedNode4, rotatedNode5, rotatedTree *AVLTree[int]
 	)
 
-	// test case1
+	//test case1
 	node1 = &AVLTree[int]{value: 1}
 	node2 = &AVLTree[int]{leftNode: node1, value: 2, height: 1}
 	node3 = &AVLTree[int]{leftNode: node2, value: 3, height: 2}
-	input := node3
+	input = node3
 
-	rotatedNode3 = &AVLTree[int]{value: 3, height: 1}
-	rotatedNode1 = &AVLTree[int]{value: 1, height: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 0}
-	rotatedTree := rotatedNode2
+	rotatedNode3 = &AVLTree[int]{value: 3}
+	rotatedNode1 = &AVLTree[int]{value: 1}
+	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 1}
+	rotatedTree = rotatedNode2
+
+	testCases = append(testCases, rotateTestCase[int]{input: input, rotatedTree: rotatedTree})
+
+	// test case 2
+	node0 = &AVLTree[int]{value: 0}
+	node3 = &AVLTree[int]{value: 3}
+	node5 = &AVLTree[int]{value: 5}
+	node1 = &AVLTree[int]{leftNode: node0, value: 1, height: 1}
+	node2 = &AVLTree[int]{leftNode: node1, rightNode: node3, value: 2, height: 2}
+	node4 = &AVLTree[int]{leftNode: node2, rightNode: node5, value: 4, height: 3}
+	input = node4
+
+	rotatedNode0 = &AVLTree[int]{value: 0}
+	rotatedNode3 = &AVLTree[int]{value: 3}
+	rotatedNode5 = &AVLTree[int]{value: 5}
+	rotatedNode1 = &AVLTree[int]{leftNode: rotatedNode0, value: 1, height: 1}
+	rotatedNode4 = &AVLTree[int]{leftNode: rotatedNode3, rightNode: rotatedNode5, value: 4, height: 1}
+	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode4, value: 2, height: 2}
+	rotatedTree = rotatedNode2
 
 	testCases = append(testCases, rotateTestCase[int]{input: input, rotatedTree: rotatedTree})
 
@@ -43,33 +62,33 @@ func TestRotateLeft(t *testing.T) {
 	}
 }
 
-func getRotateRightTestCases() []rotateTestCase[int] {
-	var (
-		testCases                                []rotateTestCase[int]
-		node1, node2, node3                      *AVLTree[int]
-		rotatedNode1, rotatedNode2, rotatedNode3 *AVLTree[int]
-	)
-
-	// test case1
-	node3 = &AVLTree[int]{value: 3, height: 2}
-	node2 = &AVLTree[int]{rightNode: node3, value: 2, height: 1}
-	node1 = &AVLTree[int]{rightNode: node2, value: 1, height: 0}
-	input := node1
-
-	rotatedNode3 = &AVLTree[int]{value: 3, height: 1}
-	rotatedNode1 = &AVLTree[int]{value: 1, height: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 0}
-	rotatedTree := rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, rotatedTree: rotatedTree})
-
-	return testCases
-}
-
-type AVLTreeInsertNodeTestCase[T cmp.Ordered] struct {
-	input []T
-	tree  *AVLTree[T]
-}
+//func getRotateRightTestCases() []rotateTestCase[int] {
+//	var (
+//		testCases                                []rotateTestCase[int]
+//		node1, node2, node3                      *AVLTree[int]
+//		rotatedNode1, rotatedNode2, rotatedNode3 *AVLTree[int]
+//	)
+//
+//	// test case1
+//	node3 = &AVLTree[int]{value: 3, height: 2}
+//	node2 = &AVLTree[int]{rightNode: node3, value: 2, height: 1}
+//	node1 = &AVLTree[int]{rightNode: node2, value: 1}
+//	input := node1
+//
+//	rotatedNode3 = &AVLTree[int]{value: 3, height: 1}
+//	rotatedNode1 = &AVLTree[int]{value: 1, height: 1}
+//	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2}
+//	rotatedTree := rotatedNode2
+//
+//	testCases = append(testCases, rotateTestCase[int]{input: input, rotatedTree: rotatedTree})
+//
+//	return testCases
+//}
+//
+//type AVLTreeInsertNodeTestCase[T cmp.Ordered] struct {
+//	input []T
+//	tree  *AVLTree[T]
+//}
 
 //func getTestCases() []AVLTreeInsertNodeTestCase[int] {
 //	// test case 1 & 2
