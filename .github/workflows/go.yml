@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  go:
+  lint-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -26,11 +26,6 @@ jobs:
       run: |
         go version
         go install golang.org/x/lint/golint@latest
-
-      # Run build of the application
-    - name: Run build
-      run: go build .
-
       # Run vet & lint on the code
     - name: Run vet & lint
       run: |
