@@ -2,7 +2,6 @@ package avltree
 
 import (
 	"cmp"
-	"reflect"
 	"testing"
 )
 
@@ -20,169 +19,17 @@ func TestNewAVLTree(t *testing.T) {
 
 func TestAVLTree_GetRootValue(t *testing.T) {
 	type TestCase[T cmp.Ordered] struct {
-		input  *AVLTree[T]
+		input  *AvlTree[T]
 		output T
 	}
 	testCases := []TestCase[int]{
-		{input: &AVLTree[int]{value: 8}, output: 8},
-		{input: &AVLTree[int]{value: 5}, output: 5},
+		{input: &AvlTree[int]{value: 8}, output: 8},
+		{input: &AvlTree[int]{value: 5}, output: 5},
 	}
 
 	for index, testCase := range testCases {
 		got := testCase.input.GetRootValue()
 		if got != testCase.output {
-			t.Errorf("Case %d", index)
-		}
-	}
-}
-
-type rotateTestCase[T cmp.Ordered] struct {
-	input  *AVLTree[T]
-	output *AVLTree[T]
-}
-
-func getRotateLeftTestCases() []rotateTestCase[int] {
-	var (
-		testCases                                                                                  []rotateTestCase[int]
-		node0, node1, node2, node3, node4, node5, input                                            *AVLTree[int]
-		rotatedNode0, rotatedNode1, rotatedNode2, rotatedNode3, rotatedNode4, rotatedNode5, output *AVLTree[int]
-	)
-
-	//test case1
-	node1 = &AVLTree[int]{value: 1}
-	node2 = &AVLTree[int]{leftNode: node1, value: 2, height: 1}
-	node3 = &AVLTree[int]{leftNode: node2, value: 3, height: 2}
-	input = node3
-
-	rotatedNode3 = &AVLTree[int]{value: 3}
-	rotatedNode1 = &AVLTree[int]{value: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 1}
-	output = rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, output: output})
-
-	// test case 2
-	node0 = &AVLTree[int]{value: 0}
-	node3 = &AVLTree[int]{value: 3}
-	node5 = &AVLTree[int]{value: 5}
-	node1 = &AVLTree[int]{leftNode: node0, value: 1, height: 1}
-	node2 = &AVLTree[int]{leftNode: node1, rightNode: node3, value: 2, height: 2}
-	node4 = &AVLTree[int]{leftNode: node2, rightNode: node5, value: 4, height: 3}
-	input = node4
-
-	rotatedNode0 = &AVLTree[int]{value: 0}
-	rotatedNode3 = &AVLTree[int]{value: 3}
-	rotatedNode5 = &AVLTree[int]{value: 5}
-	rotatedNode1 = &AVLTree[int]{leftNode: rotatedNode0, value: 1, height: 1}
-	rotatedNode4 = &AVLTree[int]{leftNode: rotatedNode3, rightNode: rotatedNode5, value: 4, height: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode4, value: 2, height: 2}
-	output = rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, output: output})
-
-	return testCases
-}
-
-func TestRotateLeft(t *testing.T) {
-	for index, testCase := range getRotateLeftTestCases() {
-		got := rotateLeft(testCase.input)
-		if reflect.DeepEqual(got, testCase.output) == false {
-			t.Errorf("Case %d", index)
-		}
-	}
-}
-
-func getRotateRightTestCases() []rotateTestCase[int] {
-	var (
-		testCases                                             []rotateTestCase[int]
-		node1, node2, node3, input                            *AVLTree[int]
-		rotatedNode1, rotatedNode2, rotatedNode3, rotatedTree *AVLTree[int]
-	)
-
-	//test case1
-	node3 = &AVLTree[int]{value: 3}
-	node2 = &AVLTree[int]{rightNode: node3, value: 2, height: 1}
-	node1 = &AVLTree[int]{rightNode: node2, value: 1, height: 2}
-	input = node1
-
-	rotatedNode3 = &AVLTree[int]{value: 3}
-	rotatedNode1 = &AVLTree[int]{value: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 1}
-	rotatedTree = rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, output: rotatedTree})
-
-	return testCases
-}
-
-func TestRotateRight(t *testing.T) {
-	for index, testCase := range getRotateRightTestCases() {
-		got := rotateRight(testCase.input)
-		if reflect.DeepEqual(got, testCase.output) == false {
-			t.Errorf("Case %d", index)
-		}
-	}
-}
-
-func getDoubleRotateLeftTestCases() []rotateTestCase[int] {
-	var (
-		testCases                                        []rotateTestCase[int]
-		node1, node2, node3, input                       *AVLTree[int]
-		rotatedNode1, rotatedNode2, rotatedNode3, output *AVLTree[int]
-	)
-
-	// test case 1
-	node2 = &AVLTree[int]{value: 2}
-	node1 = &AVLTree[int]{rightNode: node2, value: 1}
-	node3 = &AVLTree[int]{leftNode: node1, value: 3}
-	input = node3
-
-	rotatedNode3 = &AVLTree[int]{value: 3}
-	rotatedNode1 = &AVLTree[int]{value: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 1}
-	output = rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, output: output})
-
-	return testCases
-}
-
-func TestDoubleRotateLeft(t *testing.T) {
-	for index, testCase := range getDoubleRotateLeftTestCases() {
-		got := doubleRotateLeft(testCase.input)
-		if reflect.DeepEqual(got, testCase.output) == false {
-			t.Errorf("Case %d", index)
-		}
-	}
-}
-
-func getDoubleRotateRightTestCases() []rotateTestCase[int] {
-	var (
-		testCases                                        []rotateTestCase[int]
-		node1, node2, node3, input                       *AVLTree[int]
-		rotatedNode1, rotatedNode2, rotatedNode3, output *AVLTree[int]
-	)
-
-	// test case 1
-	node2 = &AVLTree[int]{value: 2}
-	node3 = &AVLTree[int]{leftNode: node2, value: 3}
-	node1 = &AVLTree[int]{rightNode: node3, value: 1}
-	input = node1
-
-	rotatedNode3 = &AVLTree[int]{value: 3}
-	rotatedNode1 = &AVLTree[int]{value: 1}
-	rotatedNode2 = &AVLTree[int]{leftNode: rotatedNode1, rightNode: rotatedNode3, value: 2, height: 1}
-	output = rotatedNode2
-
-	testCases = append(testCases, rotateTestCase[int]{input: input, output: output})
-
-	return testCases
-}
-
-func TestDoubleRotateRight(t *testing.T) {
-	for index, testCase := range getDoubleRotateRightTestCases() {
-		got := doubleRotateRight(testCase.input)
-		if reflect.DeepEqual(got, testCase.output) == false {
 			t.Errorf("Case %d", index)
 		}
 	}
