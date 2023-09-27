@@ -5,24 +5,40 @@ import (
 	"math"
 )
 
+type RotationNotPossible struct {
+	Message string
+}
+
+func (e *RotationNotPossible) Error() string {
+	return e.Message
+}
+
 func rotateLeft[T cmp.Ordered](tree *AvlTree[T]) *AvlTree[T] {
-	leftTree := tree.leftNode
-	tree.leftNode = leftTree.rightNode
-	leftTree.rightNode = tree
+	if tree == nil || tree.leftNode == nil {
+		err := RotationNotPossible{"Tree and/or left son is nil"}
+		panic(err)
+	}
+	rotatedTree := tree.leftNode
+	tree.leftNode = rotatedTree.rightNode
+	rotatedTree.rightNode = tree
 
 	tree.height = int64(math.Max(float64(getHeight(tree.leftNode)), float64(getHeight(tree.rightNode))) + 1)
-	leftTree.height = int64(math.Max(float64(getHeight(tree.rightNode)), float64(getHeight(tree))) + 1)
-	return leftTree
+	rotatedTree.height = int64(math.Max(float64(getHeight(tree.rightNode)), float64(getHeight(tree))) + 1)
+	return rotatedTree
 }
 
 func rotateRight[T cmp.Ordered](tree *AvlTree[T]) *AvlTree[T] {
-	rightTree := tree.rightNode
-	tree.rightNode = rightTree.leftNode
-	rightTree.leftNode = tree
+	if tree == nil || tree.rightNode == nil {
+		err := RotationNotPossible{"Tree and/or right son is nil"}
+		panic(err)
+	}
+	rotatedTree := tree.rightNode
+	tree.rightNode = rotatedTree.leftNode
+	rotatedTree.leftNode = tree
 
 	tree.height = int64(math.Max(float64(getHeight(tree.leftNode)), float64(getHeight(tree.rightNode))) + 1)
-	rightTree.height = int64(math.Max(float64(getHeight(tree.rightNode)), float64(getHeight(tree))) + 1)
-	return rightTree
+	rotatedTree.height = int64(math.Max(float64(getHeight(tree.rightNode)), float64(getHeight(tree))) + 1)
+	return rotatedTree
 }
 
 func doubleRotateLeft[T cmp.Ordered](tree *AvlTree[T]) *AvlTree[T] {
