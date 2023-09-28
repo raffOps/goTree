@@ -10,13 +10,38 @@ func TestNewAVLTree(t *testing.T) {
 	if got.value != 5 || got.leftNode != nil || got.rightNode != nil {
 		t.Errorf("Case int tree")
 	}
+}
 
-	gotString := NewAVLTree("maria")
-	if gotString.value != "maria" || gotString.leftNode != nil || gotString.rightNode != nil {
-		t.Errorf("Case string tree")
+type getAvlTreeStringTestCase[T cmp.Ordered] struct {
+	input  *avlTree[T]
+	output string
+}
+
+func getAvlTreeStringTestCases() []getAvlTreeStringTestCase[int] {
+	testCases := []getAvlTreeStringTestCase[int]{
+		{
+			input: &avlTree[int]{value: 3, height: 2,
+				leftNode: &avlTree[int]{value: 2, height: 1,
+					leftNode: &avlTree[int]{value: 1, height: 0},
+				},
+				rightNode: &avlTree[int]{value: 4, height: 0},
+			},
+			output: "value: 3, height: 2, \nleftNode: value: 2, height: 1, \n\tleftNode: value: 1, height: 0, \n\trightNode: , \nrightNode: value: 4, height: 0",
+		},
 	}
 }
 
+func TestAvlTreeString(t *testing.T) {
+	testCases := getAvlTreeStringTestCases()
+	for index, testCase := range testCases {
+		got := testCase.input.String()
+		if got != testCase.output {
+			t.Errorf("Case %d\ngot: \n%v\n\nwant: %v", index, got, testCase.output)
+		}
+	}
+}
+
+// Given a avlTree with a value as rootValue, when GetRootValue is called, then the value is returned.
 func TestAVLTree_GetRootValue(t *testing.T) {
 	type TestCase[T cmp.Ordered] struct {
 		input  *AvlTree[T]

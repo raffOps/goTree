@@ -2,6 +2,8 @@ package avltree
 
 import (
 	"cmp"
+	"fmt"
+	"strings"
 )
 
 // AvlTree struct for a AVL Tree of any ordered type.
@@ -12,9 +14,31 @@ type AvlTree[T cmp.Ordered] struct {
 	height              int64
 }
 
-// NewAVLTree factory function for avlTree struct
-func NewAVLTree[T cmp.Ordered](rootValue T) *AvlTree[T] {
-	return &AvlTree[T]{value: rootValue}
+// NewAvlTree factory function for avlTree struct.
+// Return a nil pointer to avlTree.
+func NewAvlTree[T cmp.Ordered]() *avlTree[T] {
+	return nil
+}
+
+func stringHelper[T cmp.Ordered](tree *avlTree[T], level int) string {
+	indentation := strings.Repeat("\t", level)
+	if tree == nil {
+		return ""
+	} else if tree.leftNode == nil && tree.rightNode == nil {
+		return fmt.Sprintf("value: %v, height: %d", tree.value, tree.height)
+	}
+	return fmt.Sprintf("value: %v, height: %d, \n%sleftNode: %v, \n%srightNode: %v",
+		tree.value,
+		tree.height,
+		indentation,
+		stringHelper(tree.leftNode, level+1),
+		indentation,
+		stringHelper(tree.rightNode, level+1),
+	)
+}
+
+func (tree avlTree[T]) String() string {
+	return stringHelper[T](&tree, 0)
 }
 
 func (t *AvlTree[T]) GetRootValue() T {
