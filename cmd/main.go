@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
-	tree := avltree.NewAVLTree(1)
+	tree := avltree.NewAvlTree[int]()
+	tree = avltree.Insert(tree, 1)
+
 	fmt.Printf("%v", tree)
 }
