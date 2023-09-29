@@ -7,23 +7,23 @@ import (
 	"strings"
 )
 
-// avlTree struct for an AVL Tree of any ordered type.
+// AvlTree struct for an AVL Tree of any ordered type.
 // This is a self-balancing binary tree.
 // The difference between the heights of the left and right subtree cannot be more than one for all nodes.
 // For more information about theory, see https://en.wikipedia.org/wiki/AVL_tree
-type avlTree[T cmp.Ordered] struct {
-	leftNode, rightNode *avlTree[T]
+type AvlTree[T cmp.Ordered] struct {
+	leftNode, rightNode *AvlTree[T]
 	value               T
 	height              int64
 }
 
 // NewAvlTree factory function for avlTree struct.
 // Return a nil pointer to avlTree.
-func NewAvlTree[T cmp.Ordered]() *avlTree[T] {
+func NewAvlTree[T cmp.Ordered]() *AvlTree[T] {
 	return nil
 }
 
-func stringHelper[T cmp.Ordered](tree *avlTree[T], level int) string {
+func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
 	if tree == nil {
 		return ""
 	} else if tree.leftNode == nil && tree.rightNode == nil {
@@ -40,13 +40,13 @@ func stringHelper[T cmp.Ordered](tree *avlTree[T], level int) string {
 	)
 }
 
-func (tree avlTree[T]) String() string {
+func (tree AvlTree[T]) String() string {
 	return stringHelper[T](&tree, 0)
 }
 
 // GetRootValue returns the value of the root node.
 // If the tree is nil, returns the zero value of the type.
-func GetRootValue[T cmp.Ordered](t *avlTree[T]) T {
+func GetRootValue[T cmp.Ordered](t *AvlTree[T]) T {
 	if t == nil {
 		var zeroValue T
 		return zeroValue
@@ -56,7 +56,7 @@ func GetRootValue[T cmp.Ordered](t *avlTree[T]) T {
 
 // getHeight returns the height of a tree.
 // If the tree is nil, returns -1.
-func getHeight[T cmp.Ordered](tree *avlTree[T]) int64 {
+func getHeight[T cmp.Ordered](tree *AvlTree[T]) int64 {
 	if tree == nil {
 		return -1
 	}
@@ -70,9 +70,9 @@ func getHeight[T cmp.Ordered](tree *avlTree[T]) int64 {
 // If the value is greater than the root, it inserts in the right subtree.
 // After inserting, it rebalances the tree.
 // It returns the new root of the tree.
-func Insert[T cmp.Ordered](tree *avlTree[T], value T) *avlTree[T] {
+func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 	if tree == nil {
-		return &avlTree[T]{value: value}
+		return &AvlTree[T]{value: value}
 	}
 	if cmp.Compare(value, tree.value) == 0 {
 		return tree
@@ -97,7 +97,7 @@ func Insert[T cmp.Ordered](tree *avlTree[T], value T) *avlTree[T] {
 // If the balance factor is greater than 1 and the value is greater than the root left son, it performs a right rotation on the left son and then a left rotation on the root.
 // If the balance factor is less than -1 and the value is less than the root right son, it performs a left rotation on the right son and then a right rotation on the root.
 // It returns the new root of the tree.
-func rebalanceTree[T cmp.Ordered](unbalancedTree *avlTree[T], value T) *avlTree[T] {
+func rebalanceTree[T cmp.Ordered](unbalancedTree *AvlTree[T], value T) *AvlTree[T] {
 	balanceFactor := getHeight(unbalancedTree.leftNode) - getHeight(unbalancedTree.rightNode)
 	if balanceFactor > 1 && cmp.Compare(value, unbalancedTree.leftNode.value) < 0 {
 		return rotateLeft(unbalancedTree)

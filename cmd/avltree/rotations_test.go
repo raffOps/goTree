@@ -7,34 +7,34 @@ import (
 )
 
 type rotateTestCase[T cmp.Ordered] struct {
-	input  *avlTree[T]
-	output *avlTree[T]
+	input  *AvlTree[T]
+	output *AvlTree[T]
 }
 
 func getRotateLeftTestCases() []rotateTestCase[int] {
 	testCases := []rotateTestCase[int]{
 		{
-			input: &avlTree[int]{value: 3, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					leftNode: &avlTree[int]{value: 1, height: 0},
+			input: &AvlTree[int]{value: 3, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					leftNode: &AvlTree[int]{value: 1, height: 0},
 				},
 			},
-			output: &avlTree[int]{value: 2, height: 1,
-				leftNode:  &avlTree[int]{value: 1, height: 0},
-				rightNode: &avlTree[int]{value: 3, height: 0},
+			output: &AvlTree[int]{value: 2, height: 1,
+				leftNode:  &AvlTree[int]{value: 1, height: 0},
+				rightNode: &AvlTree[int]{value: 3, height: 0},
 			},
 		},
 		{
-			input: &avlTree[int]{value: 3, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					leftNode: &avlTree[int]{value: 1, height: 0},
+			input: &AvlTree[int]{value: 3, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					leftNode: &AvlTree[int]{value: 1, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 4, height: 0},
+				rightNode: &AvlTree[int]{value: 4, height: 0},
 			},
-			output: &avlTree[int]{value: 2, height: 2,
-				leftNode: &avlTree[int]{value: 1, height: 0},
-				rightNode: &avlTree[int]{value: 3, height: 1,
-					rightNode: &avlTree[int]{value: 4, height: 0},
+			output: &AvlTree[int]{value: 2, height: 2,
+				leftNode: &AvlTree[int]{value: 1, height: 0},
+				rightNode: &AvlTree[int]{value: 3, height: 1,
+					rightNode: &AvlTree[int]{value: 4, height: 0},
 				},
 			},
 		},
@@ -54,28 +54,28 @@ func TestRotateLeft(t *testing.T) {
 func getRotateRightTestCases() []rotateTestCase[int] {
 	testCases := []rotateTestCase[int]{
 		{
-			input: &avlTree[int]{value: 2, height: 2,
-				rightNode: &avlTree[int]{value: 3, height: 1,
-					rightNode: &avlTree[int]{value: 4, height: 0},
+			input: &AvlTree[int]{value: 2, height: 2,
+				rightNode: &AvlTree[int]{value: 3, height: 1,
+					rightNode: &AvlTree[int]{value: 4, height: 0},
 				},
 			},
-			output: &avlTree[int]{value: 3, height: 1,
-				leftNode:  &avlTree[int]{value: 2, height: 0},
-				rightNode: &avlTree[int]{value: 4, height: 0},
+			output: &AvlTree[int]{value: 3, height: 1,
+				leftNode:  &AvlTree[int]{value: 2, height: 0},
+				rightNode: &AvlTree[int]{value: 4, height: 0},
 			},
 		},
 		{
-			input: &avlTree[int]{value: 1, height: 2,
-				rightNode: &avlTree[int]{value: 3, height: 1,
-					leftNode:  &avlTree[int]{value: 2, height: 0},
-					rightNode: &avlTree[int]{value: 4, height: 0},
+			input: &AvlTree[int]{value: 1, height: 2,
+				rightNode: &AvlTree[int]{value: 3, height: 1,
+					leftNode:  &AvlTree[int]{value: 2, height: 0},
+					rightNode: &AvlTree[int]{value: 4, height: 0},
 				},
 			},
-			output: &avlTree[int]{value: 3, height: 2,
-				leftNode: &avlTree[int]{value: 1, height: 1,
-					rightNode: &avlTree[int]{value: 2, height: 0},
+			output: &AvlTree[int]{value: 3, height: 2,
+				leftNode: &AvlTree[int]{value: 1, height: 1,
+					rightNode: &AvlTree[int]{value: 2, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 4, height: 0},
+				rightNode: &AvlTree[int]{value: 4, height: 0},
 			},
 		},
 	}

@@ -14,18 +14,18 @@ func TestNewAvlTree(t *testing.T) {
 }
 
 type getAvlTreeStringTestCase[T cmp.Ordered] struct {
-	input  *avlTree[T]
+	input  *AvlTree[T]
 	output string
 }
 
 func getAvlTreeStringTestCases() []getAvlTreeStringTestCase[int] {
 	testCases := []getAvlTreeStringTestCase[int]{
 		{
-			input: &avlTree[int]{value: 3, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					leftNode: &avlTree[int]{value: 1, height: 0},
+			input: &AvlTree[int]{value: 3, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					leftNode: &AvlTree[int]{value: 1, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 4, height: 0},
+				rightNode: &AvlTree[int]{value: 4, height: 0},
 			},
 			output: "value: 3, height: 2, \nleftNode: value: 2, height: 1, \n  leftNode: value: 1, height: 0, \n  rightNode: , \nrightNode: value: 4, height: 0",
 		},
@@ -46,13 +46,13 @@ func TestAvlTreeString(t *testing.T) {
 // Given a avlTree with a value as rootValue, when GetRootValue is called, then the value is returned.
 func TestGetRootValue(t *testing.T) {
 	type TestCase[T cmp.Ordered] struct {
-		input  *avlTree[T]
+		input  *AvlTree[T]
 		output T
 	}
 	//
 	testCases := []TestCase[int]{
-		{input: &avlTree[int]{value: 8}, output: 8},
-		{input: &avlTree[int]{value: 5}, output: 5},
+		{input: &AvlTree[int]{value: 8}, output: 8},
+		{input: &AvlTree[int]{value: 5}, output: 5},
 	}
 
 	for index, testCase := range testCases {
@@ -64,17 +64,17 @@ func TestGetRootValue(t *testing.T) {
 }
 
 type getHeightTestCase[T cmp.Ordered] struct {
-	input  *avlTree[T]
+	input  *AvlTree[T]
 	output int64
 }
 
 func getGetHeightTestCases() []getHeightTestCase[int] {
 	testCases := []getHeightTestCase[int]{
 		{input: nil, output: -1},
-		{input: &avlTree[int]{value: 8, height: 0}, output: 0},
-		{input: &avlTree[int]{value: 8, height: 1}, output: 1},
-		{input: &avlTree[int]{value: 8, height: 2}, output: 2},
-		{input: &avlTree[int]{value: 8, height: 3}, output: 3},
+		{input: &AvlTree[int]{value: 8, height: 0}, output: 0},
+		{input: &AvlTree[int]{value: 8, height: 1}, output: 1},
+		{input: &AvlTree[int]{value: 8, height: 2}, output: 2},
+		{input: &AvlTree[int]{value: 8, height: 3}, output: 3},
 	}
 	return testCases
 }
@@ -102,9 +102,9 @@ func TestGetRootValueFromEmptyTree(t *testing.T) {
 }
 
 type insertTestCase[T cmp.Ordered] struct {
-	treeInput *avlTree[T]
+	treeInput *AvlTree[T]
 	value     T
-	output    *avlTree[T]
+	output    *AvlTree[T]
 }
 
 func getInsertTestCases() []insertTestCase[int] {
@@ -112,93 +112,93 @@ func getInsertTestCases() []insertTestCase[int] {
 		{
 			treeInput: nil,
 			value:     8,
-			output:    &avlTree[int]{value: 8, height: 0},
+			output:    &AvlTree[int]{value: 8, height: 0},
 		},
 		{
-			treeInput: &avlTree[int]{value: 8, height: 0},
+			treeInput: &AvlTree[int]{value: 8, height: 0},
 			value:     8,
-			output:    &avlTree[int]{value: 8, height: 0},
+			output:    &AvlTree[int]{value: 8, height: 0},
 		},
 		{
-			treeInput: &avlTree[int]{value: 8, height: 0},
+			treeInput: &AvlTree[int]{value: 8, height: 0},
 			value:     5,
-			output:    &avlTree[int]{value: 8, height: 1, leftNode: &avlTree[int]{value: 5, height: 0}},
+			output:    &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}},
 		},
 		{
-			treeInput: &avlTree[int]{value: 8, height: 1, leftNode: &avlTree[int]{value: 5, height: 0}},
+			treeInput: &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}},
 			value:     3,
-			output:    &avlTree[int]{value: 5, height: 1, leftNode: &avlTree[int]{value: 3, height: 0}, rightNode: &avlTree[int]{value: 8, height: 0}},
+			output:    &AvlTree[int]{value: 5, height: 1, leftNode: &AvlTree[int]{value: 3, height: 0}, rightNode: &AvlTree[int]{value: 8, height: 0}},
 		},
 		{
-			treeInput: &avlTree[int]{value: 5, height: 1, leftNode: &avlTree[int]{value: 3, height: 0}, rightNode: &avlTree[int]{value: 8, height: 0}},
+			treeInput: &AvlTree[int]{value: 5, height: 1, leftNode: &AvlTree[int]{value: 3, height: 0}, rightNode: &AvlTree[int]{value: 8, height: 0}},
 			value:     7,
-			output: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 0},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode: &avlTree[int]{value: 7, height: 0},
+			output: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode: &AvlTree[int]{value: 7, height: 0},
 					height:   1,
 				},
 			},
 		},
 		{
-			treeInput: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 0},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode: &avlTree[int]{value: 7, height: 0},
+			treeInput: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode: &AvlTree[int]{value: 7, height: 0},
 					height:   1,
 				},
 			},
 			value: 9,
-			output: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 0},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode:  &avlTree[int]{value: 7, height: 0},
-					rightNode: &avlTree[int]{value: 9, height: 0},
+			output: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode:  &AvlTree[int]{value: 7, height: 0},
+					rightNode: &AvlTree[int]{value: 9, height: 0},
 					height:    1,
 				},
 			},
 		},
 		{
-			treeInput: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 0},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode:  &avlTree[int]{value: 7, height: 0},
-					rightNode: &avlTree[int]{value: 9, height: 0},
+			treeInput: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode:  &AvlTree[int]{value: 7, height: 0},
+					rightNode: &AvlTree[int]{value: 9, height: 0},
 					height:    1,
 				},
 			},
 			value: 2,
-			output: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 1,
-					leftNode: &avlTree[int]{value: 2, height: 0},
+			output: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 1,
+					leftNode: &AvlTree[int]{value: 2, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode:  &avlTree[int]{value: 7, height: 0},
-					rightNode: &avlTree[int]{value: 9, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode:  &AvlTree[int]{value: 7, height: 0},
+					rightNode: &AvlTree[int]{value: 9, height: 0},
 					height:    1,
 				},
 			},
 		},
 		{
-			treeInput: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 3, height: 1,
-					leftNode: &avlTree[int]{value: 2, height: 0},
+			treeInput: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 3, height: 1,
+					leftNode: &AvlTree[int]{value: 2, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode:  &avlTree[int]{value: 7, height: 0},
-					rightNode: &avlTree[int]{value: 9, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode:  &AvlTree[int]{value: 7, height: 0},
+					rightNode: &AvlTree[int]{value: 9, height: 0},
 					height:    1,
 				},
 			},
 			value: 1,
-			output: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					leftNode:  &avlTree[int]{value: 1, height: 0},
-					rightNode: &avlTree[int]{value: 3, height: 0},
+			output: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					leftNode:  &AvlTree[int]{value: 1, height: 0},
+					rightNode: &AvlTree[int]{value: 3, height: 0},
 				},
-				rightNode: &avlTree[int]{value: 8,
-					leftNode:  &avlTree[int]{value: 7, height: 0},
-					rightNode: &avlTree[int]{value: 9, height: 0},
+				rightNode: &AvlTree[int]{value: 8,
+					leftNode:  &AvlTree[int]{value: 7, height: 0},
+					rightNode: &AvlTree[int]{value: 9, height: 0},
 					height:    1,
 				},
 			},
@@ -218,9 +218,9 @@ func TestInsert(t *testing.T) {
 }
 
 type rebalanceTreeTestCase[T cmp.Ordered] struct {
-	treeInput  *avlTree[T]
+	treeInput  *AvlTree[T]
 	valueInput T
-	output     *avlTree[T]
+	output     *AvlTree[T]
 }
 
 func getRebalanceTreeTestCases() []rebalanceTreeTestCase[int] {
@@ -228,57 +228,57 @@ func getRebalanceTreeTestCases() []rebalanceTreeTestCase[int] {
 		{
 			// If the balance factor is greater than 1 and the value is less than the root left son,
 			// it performs a left rotation.
-			treeInput: &avlTree[int]{value: 3, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					leftNode: &avlTree[int]{value: 1, height: 0},
+			treeInput: &AvlTree[int]{value: 3, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					leftNode: &AvlTree[int]{value: 1, height: 0},
 				},
 			},
 			valueInput: 1,
-			output: &avlTree[int]{value: 2, height: 1,
-				leftNode:  &avlTree[int]{value: 1, height: 0},
-				rightNode: &avlTree[int]{value: 3, height: 0},
+			output: &AvlTree[int]{value: 2, height: 1,
+				leftNode:  &AvlTree[int]{value: 1, height: 0},
+				rightNode: &AvlTree[int]{value: 3, height: 0},
 			},
 		},
 		{
 			// If the balance factor is less than -1 and the value is greater than the root right son,
 			// it performs a right rotation.
-			treeInput: &avlTree[int]{value: 2, height: 2,
-				rightNode: &avlTree[int]{value: 3, height: 1,
-					rightNode: &avlTree[int]{value: 4, height: 0},
+			treeInput: &AvlTree[int]{value: 2, height: 2,
+				rightNode: &AvlTree[int]{value: 3, height: 1,
+					rightNode: &AvlTree[int]{value: 4, height: 0},
 				},
 			},
 			valueInput: 4,
-			output: &avlTree[int]{value: 3, height: 1,
-				leftNode:  &avlTree[int]{value: 2, height: 0},
-				rightNode: &avlTree[int]{value: 4, height: 0},
+			output: &AvlTree[int]{value: 3, height: 1,
+				leftNode:  &AvlTree[int]{value: 2, height: 0},
+				rightNode: &AvlTree[int]{value: 4, height: 0},
 			},
 		},
 		{
 			// If the balance factor is greater than 1 and the value is greater than the root left son,
 			// it performs a right rotation on the left son and then a left rotation on the root.
-			treeInput: &avlTree[int]{value: 5, height: 2,
-				leftNode: &avlTree[int]{value: 2, height: 1,
-					rightNode: &avlTree[int]{value: 3, height: 0},
+			treeInput: &AvlTree[int]{value: 5, height: 2,
+				leftNode: &AvlTree[int]{value: 2, height: 1,
+					rightNode: &AvlTree[int]{value: 3, height: 0},
 				},
 			},
 			valueInput: 3,
-			output: &avlTree[int]{value: 3, height: 1,
-				leftNode:  &avlTree[int]{value: 2, height: 0},
-				rightNode: &avlTree[int]{value: 5, height: 0},
+			output: &AvlTree[int]{value: 3, height: 1,
+				leftNode:  &AvlTree[int]{value: 2, height: 0},
+				rightNode: &AvlTree[int]{value: 5, height: 0},
 			},
 		},
 		{
 			// If the balance factor is less than -1 and the value is less than the root right son,
 			// it performs a left rotation on the right son and then a right rotation on the root.
-			treeInput: &avlTree[int]{value: 3, height: 2,
-				rightNode: &avlTree[int]{value: 5, height: 1,
-					leftNode: &avlTree[int]{value: 4, height: 0},
+			treeInput: &AvlTree[int]{value: 3, height: 2,
+				rightNode: &AvlTree[int]{value: 5, height: 1,
+					leftNode: &AvlTree[int]{value: 4, height: 0},
 				},
 			},
 			valueInput: 4,
-			output: &avlTree[int]{value: 4, height: 1,
-				leftNode:  &avlTree[int]{value: 3, height: 0},
-				rightNode: &avlTree[int]{value: 5, height: 0},
+			output: &AvlTree[int]{value: 4, height: 1,
+				leftNode:  &AvlTree[int]{value: 3, height: 0},
+				rightNode: &AvlTree[int]{value: 5, height: 0},
 			},
 		},
 	}
