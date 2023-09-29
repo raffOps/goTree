@@ -3,6 +3,7 @@ package avltree
 import (
 	"cmp"
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -23,12 +24,12 @@ func NewAvlTree[T cmp.Ordered]() *avlTree[T] {
 }
 
 func stringHelper[T cmp.Ordered](tree *avlTree[T], level int) string {
-	indentation := strings.Repeat("\t", level)
 	if tree == nil {
 		return ""
 	} else if tree.leftNode == nil && tree.rightNode == nil {
 		return fmt.Sprintf("value: %v, height: %d", tree.value, tree.height)
 	}
+	indentation := strings.Repeat("  ", level)
 	return fmt.Sprintf("value: %v, height: %d, \n%sleftNode: %v, \n%srightNode: %v",
 		tree.value,
 		tree.height,
@@ -62,14 +63,6 @@ func getHeight[T cmp.Ordered](tree *avlTree[T]) int64 {
 	return tree.height
 }
 
-// insertHelper helper function for Insert.
-func insertHelper[T cmp.Ordered](tree *avlTree[T], father *avlTree[T], value T) *avlTree[T] {
-	if tree == nil {
-		return &avlTree[T]{value: value, height: 0}
-	}
-	return nil
-}
-
 // Insert  inserts a value in the tree.
 // If the tree is nil, it creates a new node with the value.
 // If the value is already in the tree, it does nothing.
@@ -78,5 +71,47 @@ func insertHelper[T cmp.Ordered](tree *avlTree[T], father *avlTree[T], value T) 
 // After inserting, it rebalances the tree.
 // It returns the new root of the tree.
 func Insert[T cmp.Ordered](tree *avlTree[T], value T) *avlTree[T] {
-	return insertHelper(tree, nil, value)
+	if tree == nil {
+		return &avlTree[T]{value: value}
+	}
+	if cmp.Compare(value, tree.value) == 0 {
+		return tree
+	}
+
+	if cmp.Compare(value, tree.value) < 0 {
+		tree.leftNode = Insert(tree.leftNode, value)
+	} else {
+		tree.rightNode = Insert(tree.rightNode, value)
+	}
+
+	tree.height = int64(math.Max(float64(getHeight(tree.leftNode)), float64(getHeight(tree.rightNode))) + 1)
+
+	return rebalanceTree(tree, value)
+}
+
+// rebalanceTree rebalances the tree.
+// If the tree is nil, it returns nil.
+// It uses the balance factor to know if the tree is balanced or not.
+// If the balance factor is greater than 1 and the value is less than the root left son, it performs a left rotation.
+// If the balance factor is less than -1 and the value is greater than the root right son, it performs a right rotation.
+// If the balance factor is greater than 1 and the value is greater than the root left son, it performs a right rotation on the left son and then a left rotation on the root.
+// If the balance factor is less than -1 and the value is less than the root right son, it performs a left rotation on the right son and then a right rotation on the root.
+// It returns the new root of the tree.
+func rebalanceTree[T cmp.Ordered](unbalancedTree *avlTree[T], value T) *avlTree[T] {
+	balanceFactor := getHeight(unbalancedTree.leftNode) - getHeight(unbalancedTree.rightNode)
+	if balanceFactor > 1 && cmp.Compare(value, unbalancedTree.leftNode.value) < 0 {
+		return rotateLeft(unbalancedTree)
+	}
+	if balanceFactor < -1 && cmp.Compare(value, unbalancedTree.rightNode.value) > 0 {
+		return rotateRight(unbalancedTree)
+	}
+	if balanceFactor > 1 && cmp.Compare(value, unbalancedTree.leftNode.value) > 0 {
+		unbalancedTree.leftNode = rotateRight(unbalancedTree.leftNode)
+		return rotateLeft(unbalancedTree)
+	}
+	if balanceFactor < -1 && cmp.Compare(value, unbalancedTree.rightNode.value) < 0 {
+		unbalancedTree.rightNode = rotateLeft(unbalancedTree.rightNode)
+		return rotateRight(unbalancedTree)
+	}
+	return unbalancedTree
 }
