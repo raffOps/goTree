@@ -63,6 +63,34 @@ func getHeight[T cmp.Ordered](tree *AvlTree[T]) int64 {
 	return tree.height
 }
 
+// search searches for a value in the tree.
+// It returns the node with the value or nil if it is not found.
+func search[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
+	if tree == nil || cmp.Compare(value, tree.value) == 0 {
+		return tree
+	}
+	if cmp.Compare(value, tree.value) < 0 {
+		return search(tree.leftNode, value)
+	}
+	return search(tree.rightNode, value)
+}
+
+func toArrayHelper[T cmp.Ordered](tree *AvlTree[T], array []T) []T {
+	if tree == nil {
+		return array
+	}
+	array = toArrayHelper(tree.leftNode, array)
+	array = append(array, tree.value)
+	array = toArrayHelper(tree.rightNode, array)
+	return array
+}
+
+// ToArray returns an array with the values of the tree in order.
+func ToArray[T cmp.Ordered](tree *AvlTree[T]) []T {
+	arr := []T{}
+	return toArrayHelper(tree, arr)
+}
+
 // Insert  inserts a value in the tree.
 // If the tree is nil, it creates a new node with the value.
 // If the value is already in the tree, it does nothing.

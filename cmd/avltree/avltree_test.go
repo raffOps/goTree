@@ -101,6 +101,85 @@ func TestGetRootValueFromEmptyTree(t *testing.T) {
 	}
 }
 
+type searchTestCase[T cmp.Ordered] struct {
+	treeInput *AvlTree[T]
+	value     T
+	output    *AvlTree[T]
+}
+
+func getSearchTestCases() []searchTestCase[int] {
+	testCases := []searchTestCase[int]{
+		{
+			treeInput: nil,
+			value:     8,
+			output:    nil,
+		},
+		{
+			treeInput: &AvlTree[int]{value: 8, height: 0},
+			value:     8,
+			output:    &AvlTree[int]{value: 8, height: 0},
+		},
+		{
+			treeInput: &AvlTree[int]{value: 8, height: 0},
+			value:     5,
+			output:    nil,
+		},
+		{
+			treeInput: &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}},
+			value:     5,
+			output:    &AvlTree[int]{value: 5, height: 0},
+		},
+		{
+			treeInput: &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}},
+			value:     3,
+			output:    nil,
+		},
+	}
+	return testCases
+}
+
+func TestSearch(t *testing.T) {
+	testCases := getSearchTestCases()
+	for index, testCase := range testCases {
+		got := search(testCase.treeInput, testCase.value)
+		if !reflect.DeepEqual(got, testCase.output) {
+			t.Errorf("Case %d\ngot: \n%v\n\nwant: \n%v", index, got, testCase.output)
+		}
+	}
+}
+
+func TestToArray(t *testing.T) {
+	// generate test cases
+	testCases := []struct {
+		input  *AvlTree[int]
+		output []int
+	}{
+		{input: NewAvlTree[int](), output: []int{}},
+		{input: &AvlTree[int]{value: 8, height: 0}, output: []int{8}},
+		{input: &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}}, output: []int{5, 8}},
+		{input: &AvlTree[int]{value: 8, height: 1, rightNode: &AvlTree[int]{value: 10, height: 0}}, output: []int{8, 10}},
+		{input: &AvlTree[int]{value: 8, height: 2,
+			leftNode: &AvlTree[int]{value: 5, height: 1,
+				leftNode: &AvlTree[int]{value: 3, height: 0},
+			},
+			rightNode: &AvlTree[int]{value: 10, height: 0},
+		}, output: []int{3, 5, 8, 10}},
+		{input: &AvlTree[int]{value: 8, height: 2,
+			leftNode: &AvlTree[int]{value: 5, height: 0},
+			rightNode: &AvlTree[int]{value: 10, height: 1,
+				leftNode: &AvlTree[int]{value: 9, height: 0},
+			},
+		}, output: []int{5, 8, 9, 10}},
+	}
+	// run test cases
+	for index, testCase := range testCases {
+		got := ToArray(testCase.input)
+		if !reflect.DeepEqual(got, testCase.output) {
+			t.Errorf("Case %d\ngot: \n%v\n\nwant: \n%v", index, got, testCase.output)
+		}
+	}
+}
+
 type insertTestCase[T cmp.Ordered] struct {
 	treeInput *AvlTree[T]
 	value     T
