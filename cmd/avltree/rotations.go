@@ -45,13 +45,3 @@ func rotateRight[T cmp.Ordered](tree *avlTree[T]) *avlTree[T] {
 	rotatedTree.height = int64(math.Max(float64(getHeight(tree.rightNode)), float64(getHeight(tree))) + 1)
 	return rotatedTree
 }
-
-func doubleRotateLeft[T cmp.Ordered](tree *avlTree[T]) *avlTree[T] {
-	tree.leftNode = rotateRight(tree.leftNode)
-	return rotateLeft(tree)
-}
-
-func doubleRotateRight[T cmp.Ordered](tree *avlTree[T]) *avlTree[T] {
-	tree.rightNode = rotateLeft(tree.rightNode)
-	return rotateRight(tree)
-}
