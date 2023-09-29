@@ -8,11 +8,12 @@ import (
 
 func main() {
 	tree := avltree.NewAvlTree[int]()
-	r := rand.New(rand.NewSource(99))
-	arr := r.Perm(100)
+	r := rand.New(rand.NewSource(0))
+	arr := r.Perm(10)
 	for _, value := range arr {
 		fmt.Printf("%d  ", value)
 		tree = avltree.Insert(tree, value)
 	}
 	fmt.Printf("\n%v", tree)
+	fmt.Printf("\n%v", avltree.ToArray(tree))
 }

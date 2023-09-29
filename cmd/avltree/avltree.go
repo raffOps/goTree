@@ -40,6 +40,7 @@ func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
 	)
 }
 
+// String returns a string representation of the tree.
 func (tree AvlTree[T]) String() string {
 	return stringHelper[T](&tree, 0)
 }
@@ -125,21 +126,21 @@ func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 // If the balance factor is greater than 1 and the value is greater than the root left son, it performs a right rotation on the left son and then a left rotation on the root.
 // If the balance factor is less than -1 and the value is less than the root right son, it performs a left rotation on the right son and then a right rotation on the root.
 // It returns the new root of the tree.
-func rebalanceTree[T cmp.Ordered](unbalancedTree *AvlTree[T], value T) *AvlTree[T] {
-	balanceFactor := getHeight(unbalancedTree.leftNode) - getHeight(unbalancedTree.rightNode)
-	if balanceFactor > 1 && cmp.Compare(value, unbalancedTree.leftNode.value) < 0 {
-		return rotateLeft(unbalancedTree)
+func rebalanceTree[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
+	balanceFactor := getHeight(tree.leftNode) - getHeight(tree.rightNode)
+	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) < 0 {
+		return rotateLeft(tree)
 	}
-	if balanceFactor < -1 && cmp.Compare(value, unbalancedTree.rightNode.value) > 0 {
-		return rotateRight(unbalancedTree)
+	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) > 0 {
+		return rotateRight(tree)
 	}
-	if balanceFactor > 1 && cmp.Compare(value, unbalancedTree.leftNode.value) > 0 {
-		unbalancedTree.leftNode = rotateRight(unbalancedTree.leftNode)
-		return rotateLeft(unbalancedTree)
+	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) > 0 {
+		tree.leftNode = rotateRight(tree.leftNode)
+		return rotateLeft(tree)
 	}
-	if balanceFactor < -1 && cmp.Compare(value, unbalancedTree.rightNode.value) < 0 {
-		unbalancedTree.rightNode = rotateLeft(unbalancedTree.rightNode)
-		return rotateRight(unbalancedTree)
+	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) < 0 {
+		tree.rightNode = rotateLeft(tree.rightNode)
+		return rotateRight(tree)
 	}
-	return unbalancedTree
+	return tree
 }
