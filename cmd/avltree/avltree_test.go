@@ -141,7 +141,7 @@ func getSearchTestCases() []searchTestCase[int] {
 func TestSearch(t *testing.T) {
 	testCases := getSearchTestCases()
 	for index, testCase := range testCases {
-		got := search(testCase.treeInput, testCase.value)
+		got := Search(testCase.treeInput, testCase.value)
 		if !reflect.DeepEqual(got, testCase.output) {
 			t.Errorf("Case %d\ngot: \n%v\n\nwant: \n%v", index, got, testCase.output)
 		}
@@ -367,7 +367,7 @@ func getRebalanceTreeTestCases() []rebalanceTreeTestCase[int] {
 func TestRebalanceTree(t *testing.T) {
 	testCases := getRebalanceTreeTestCases()
 	for index, testCase := range testCases {
-		got := rebalanceTree(testCase.treeInput, testCase.valueInput)
+		got := getBalancedTree(testCase.treeInput, testCase.valueInput)
 		if !reflect.DeepEqual(got, testCase.output) {
 			t.Errorf("Case %d\ngot: \n%v\n\nwant: \n%v", index, got, testCase.output)
 		}

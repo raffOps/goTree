@@ -16,4 +16,6 @@ func main() {
 	}
 	fmt.Printf("\n%v", tree)
 	fmt.Printf("\n%v", avltree.ToArray(tree))
+	fmt.Printf("\n%v", avltree.Search(tree, 5))
+	fmt.Printf("\n%v", avltree.Search(tree, 100))
 }
