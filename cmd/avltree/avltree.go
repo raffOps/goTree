@@ -23,6 +23,11 @@ func NewAvlTree[T cmp.Ordered]() *AvlTree[T] {
 	return nil
 }
 
+// String returns a string representation of the tree.
+func (tree AvlTree[T]) String() string {
+	return stringHelper[T](&tree, 0)
+}
+
 func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
 	if tree == nil {
 		return ""
@@ -38,11 +43,6 @@ func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
 		indentation,
 		stringHelper(tree.rightNode, level+1),
 	)
-}
-
-// String returns a string representation of the tree.
-func (tree AvlTree[T]) String() string {
-	return stringHelper[T](&tree, 0)
 }
 
 // GetRootValue
@@ -75,6 +75,12 @@ func Search[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 	return Search(tree.rightNode, value)
 }
 
+// ToArray returns an array with the values of the tree in order.
+func ToArray[T cmp.Ordered](tree *AvlTree[T]) []T {
+	arr := []T{}
+	return toArrayHelper(tree, arr)
+}
+
 func toArrayHelper[T cmp.Ordered](tree *AvlTree[T], array []T) []T {
 	if tree == nil {
 		return array
@@ -83,12 +89,6 @@ func toArrayHelper[T cmp.Ordered](tree *AvlTree[T], array []T) []T {
 	array = append(array, tree.value)
 	array = toArrayHelper(tree.rightNode, array)
 	return array
-}
-
-// ToArray returns an array with the values of the tree in order.
-func ToArray[T cmp.Ordered](tree *AvlTree[T]) []T {
-	arr := []T{}
-	return toArrayHelper(tree, arr)
 }
 
 // Insert
@@ -120,26 +120,50 @@ func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 // getBalancedTree
 // If the tree is nil, it returns nil.
 // It uses the balance factor to know if the tree is balanced or not.
-// If the balance factor is greater than 1 and the value is less than the root left son, it performs a left rotation.
-// If the balance factor is less than -1 and the value is greater than the root right son, it performs a right rotation.
-// If the balance factor is greater than 1 and the value is greater than the root left son, it performs a right rotation on the left son and then a left rotation on the root.
-// If the balance factor is less than -1 and the value is less than the root right son, it performs a left rotation on the right son and then a right rotation on the root.
+// If the balance factor is greater than 1 and the value is less than the root left son,
+//
+//	it return a tree with left rotation.
+//
+// If the balance factor is greater than 1 and the value is greater than the root left son,
+//
+//	it return a tree with right rotation on the left son and then a left rotation on the root.
+//
+// If the balance factor is less than -1 and the value is greater than the root right son,
+//
+//	it return a tree with right rotation.
+//
+// If the balance factor is less than -1 and the value is less than the root right son,
+//
+//	it return a tree with left rotation on the right son and then a right rotation on the root.
+//
 // It returns the new root of the tree.
 func getBalancedTree[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
-	balanceFactor := getHeight(tree.leftNode) - getHeight(tree.rightNode)
+	balanceFactor := getBalanceFactor(tree)
 	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) < 0 {
 		return rotateLeft(tree)
-	}
-	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) > 0 {
-		return rotateRight(tree)
 	}
 	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) > 0 {
 		tree.leftNode = rotateRight(tree.leftNode)
 		return rotateLeft(tree)
 	}
+	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) > 0 {
+		return rotateRight(tree)
+	}
+
 	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) < 0 {
 		tree.rightNode = rotateLeft(tree.rightNode)
 		return rotateRight(tree)
 	}
 	return tree
+}
+
+// getBalanceFactor
+// It returns the difference between the heights of the left and right subtree.
+// If the tree is nil, it returns 0.
+func getBalanceFactor[T cmp.Ordered](tree *AvlTree[T]) int64 {
+	if tree == nil {
+		return 0
+	}
+	balanceFactor := getHeight(tree.leftNode) - getHeight(tree.rightNode)
+	return balanceFactor
 }

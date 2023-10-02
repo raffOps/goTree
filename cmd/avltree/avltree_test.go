@@ -180,6 +180,36 @@ func TestToArray(t *testing.T) {
 	}
 }
 
+func TestGetBalanceFactor(t *testing.T) {
+	testCases := []struct {
+		input  *AvlTree[int]
+		output int64
+	}{
+		{
+			input:  nil,
+			output: 0,
+		},
+		{
+			input:  &AvlTree[int]{value: 8, height: 0},
+			output: 0,
+		},
+		{
+			input:  &AvlTree[int]{value: 8, height: 1, leftNode: &AvlTree[int]{value: 5, height: 0}},
+			output: 1,
+		},
+		{
+			input:  &AvlTree[int]{value: 8, height: 1, rightNode: &AvlTree[int]{value: 10, height: 0}},
+			output: -1,
+		},
+	}
+	for index, testCase := range testCases {
+		got := getBalanceFactor(testCase.input)
+		if got != testCase.output {
+			t.Errorf("Case %d\ngot: \n%v\n\nwant: \n%v", index, got, testCase.output)
+		}
+	}
+}
+
 type insertTestCase[T cmp.Ordered] struct {
 	treeInput *AvlTree[T]
 	value     T
@@ -296,14 +326,14 @@ func TestInsert(t *testing.T) {
 	}
 }
 
-type rebalanceTreeTestCase[T cmp.Ordered] struct {
+type getBalancedTreeTestCase[T cmp.Ordered] struct {
 	treeInput  *AvlTree[T]
 	valueInput T
 	output     *AvlTree[T]
 }
 
-func getRebalanceTreeTestCases() []rebalanceTreeTestCase[int] {
-	testCases := []rebalanceTreeTestCase[int]{
+func getBalancedTreeTestCases() []getBalancedTreeTestCase[int] {
+	testCases := []getBalancedTreeTestCase[int]{
 		{
 			// If the balance factor is greater than 1 and the value is less than the root left son,
 			// it performs a left rotation.
@@ -364,8 +394,8 @@ func getRebalanceTreeTestCases() []rebalanceTreeTestCase[int] {
 	return testCases
 }
 
-func TestRebalanceTree(t *testing.T) {
-	testCases := getRebalanceTreeTestCases()
+func TestGetBalancedTree(t *testing.T) {
+	testCases := getBalancedTreeTestCases()
 	for index, testCase := range testCases {
 		got := getBalancedTree(testCase.treeInput, testCase.valueInput)
 		if !reflect.DeepEqual(got, testCase.output) {
