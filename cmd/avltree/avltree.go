@@ -45,8 +45,7 @@ func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
 	)
 }
 
-// GetRootValue
-// returns the value of the root node. If the tree is nil, returns the zero value of the type.
+// GetRootValue returns the value of the root node. If the tree is nil, returns the zero value of the type.
 func GetRootValue[T cmp.Ordered](t *AvlTree[T]) T {
 	if t == nil {
 		var zeroValue T
@@ -91,7 +90,7 @@ func toArrayHelper[T cmp.Ordered](tree *AvlTree[T], array []T) []T {
 	return array
 }
 
-// Insert
+// Insert a value in the tree.
 // If the tree is nil, it creates a new node with the value.
 // If the value is already in the tree, it does nothing.
 // If the value is less than the root, it inserts in the left subtree.
