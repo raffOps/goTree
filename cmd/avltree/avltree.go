@@ -167,3 +167,23 @@ func getBalanceFactor[T cmp.Ordered](tree *AvlTree[T]) int64 {
 	balanceFactor := getHeight(tree.leftNode) - getHeight(tree.rightNode)
 	return balanceFactor
 }
+
+// deleteSmallestSonOnTheRightAndReturn
+// It returns the smallest son on the right of the tree.
+// It's assumed that the root of the tree is not nil and has a right son at the first level
+func deleteSmallestSonOnTheRightAndReturn[T cmp.Ordered](tree *AvlTree[T]) (smallestNode *AvlTree[T]) {
+	treeWithoutSmallestNodeOnTheRight := tree
+	smallestNode = tree.rightNode
+
+	if smallestNode.leftNode == nil {
+		treeWithoutSmallestNodeOnTheRight.rightNode = nil
+		return smallestNode
+	}
+
+	for smallestNode.leftNode != nil {
+		treeWithoutSmallestNodeOnTheRight = smallestNode
+		smallestNode = smallestNode.leftNode
+	}
+	treeWithoutSmallestNodeOnTheRight.leftNode = nil
+	return smallestNode
+}
