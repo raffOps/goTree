@@ -122,19 +122,19 @@ func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 // It uses the balance factor to know if the tree is balanced or not.
 // If the balance factor is greater than 1 and the value is less than the root left son,
 //
-//	it return a tree with left rotation.
+//	it returns a tree with left rotation.
 //
 // If the balance factor is greater than 1 and the value is greater than the root left son,
 //
-//	it return a tree with right rotation on the left son and then a left rotation on the root.
+//	it returns a tree with right rotation on the left son and then a left rotation on the root.
 //
 // If the balance factor is less than -1 and the value is greater than the root right son,
 //
-//	it return a tree with right rotation.
+//	it returns a tree with right rotation.
 //
 // If the balance factor is less than -1 and the value is less than the root right son,
 //
-//	it return a tree with left rotation on the right son and then a right rotation on the root.
+//	it returns a tree with left rotation on the right son and then a right rotation on the root.
 //
 // It returns the new root of the tree.
 func getBalancedTree[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
