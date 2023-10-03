@@ -5,8 +5,7 @@ import (
 	"math"
 )
 
-// Delete
-// It deletes the value in the tree.
+// Delete the value in the tree.
 // If the tree is nil, it returns nil.
 // If the value is equal to the root, it deletes the root.
 // If the value is less than the root, it deletes in the left subtree.
