@@ -404,18 +404,16 @@ func TestGetBalancedTree(t *testing.T) {
 	}
 }
 
-func TestDeleteSmallestSonOnTheRightAndReturn(t *testing.T) {
+func TestGetSmallestSonOnTheRight(t *testing.T) {
 	testCases := []struct {
-		input                             *AvlTree[int]
-		inputWithoutSmallestSonOnTheRight *AvlTree[int]
-		outputReturned                    *AvlTree[int]
+		input  *AvlTree[int]
+		output int
 	}{
 		{
 			input: &AvlTree[int]{value: 8, height: 1,
 				rightNode: &AvlTree[int]{value: 10, height: 0},
 			},
-			outputReturned:                    &AvlTree[int]{value: 10, height: 0},
-			inputWithoutSmallestSonOnTheRight: &AvlTree[int]{value: 8, height: 1},
+			output: 10,
 		},
 		{
 			input: &AvlTree[int]{value: 8, height: 2,
@@ -424,11 +422,7 @@ func TestDeleteSmallestSonOnTheRightAndReturn(t *testing.T) {
 					leftNode: &AvlTree[int]{value: 9, height: 0},
 				},
 			},
-			outputReturned: &AvlTree[int]{value: 9, height: 0},
-			inputWithoutSmallestSonOnTheRight: &AvlTree[int]{value: 8, height: 2,
-				leftNode:  &AvlTree[int]{value: 5, height: 0},
-				rightNode: &AvlTree[int]{value: 10, height: 1},
-			},
+			output: 9,
 		},
 		{
 			input: &AvlTree[int]{value: 8, height: 2,
@@ -437,23 +431,23 @@ func TestDeleteSmallestSonOnTheRightAndReturn(t *testing.T) {
 				},
 				rightNode: &AvlTree[int]{value: 10, height: 0},
 			},
-			outputReturned: &AvlTree[int]{value: 10, height: 0},
-			inputWithoutSmallestSonOnTheRight: &AvlTree[int]{value: 8, height: 2,
-				leftNode: &AvlTree[int]{value: 5, height: 1,
-					leftNode: &AvlTree[int]{value: 3, height: 0},
+			output: 10,
+		},
+		{
+			input: &AvlTree[int]{value: 8, height: 2,
+				leftNode: &AvlTree[int]{value: 5, height: 1},
+				rightNode: &AvlTree[int]{value: 10, height: 1,
+					rightNode: &AvlTree[int]{value: 12, height: 0},
 				},
 			},
+			output: 10,
 		},
 	}
 
 	for index, testCase := range testCases {
-		outputReturned := deleteSmallestSonOnTheRightAndReturn(testCase.input)
-		if !reflect.DeepEqual(outputReturned, testCase.outputReturned) {
-			t.Errorf("Return case %d\ngot: \n%v\n\nwant: \n%v", index, outputReturned, testCase.outputReturned)
+		outputReturned := getSmallestSonOnTheRight(testCase.input)
+		if !reflect.DeepEqual(outputReturned, testCase.output) {
+			t.Errorf("Return case %d\ngot: \n%v\n\nwant: \n%v", index, outputReturned, testCase.output)
 		}
-		if !reflect.DeepEqual(testCase.input, testCase.inputWithoutSmallestSonOnTheRight) {
-			t.Errorf("Delete case %d\ngot: \n%v\n\nwant: \n%v", index, testCase.input, testCase.inputWithoutSmallestSonOnTheRight)
-		}
-
 	}
 }
