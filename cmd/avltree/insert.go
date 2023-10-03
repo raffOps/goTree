@@ -16,11 +16,11 @@ func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 	if tree == nil {
 		return &AvlTree[T]{value: value}
 	}
-	if cmp.Compare(value, tree.value) == 0 {
+	if value == tree.value {
 		return tree
 	}
 
-	if cmp.Compare(value, tree.value) < 0 {
+	if value < tree.value {
 		tree.leftNode = Insert(tree.leftNode, value)
 	} else {
 		tree.rightNode = Insert(tree.rightNode, value)
@@ -53,18 +53,18 @@ func Insert[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 // It returns the new root of the tree.
 func getBalancedTree[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
 	balanceFactor := getBalanceFactor(tree)
-	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) < 0 {
+	if balanceFactor > 1 && value < tree.leftNode.value {
 		return rotateLeft(tree)
 	}
-	if balanceFactor > 1 && cmp.Compare(value, tree.leftNode.value) > 0 {
+	if balanceFactor > 1 && value > tree.leftNode.value {
 		tree.leftNode = rotateRight(tree.leftNode)
 		return rotateLeft(tree)
 	}
-	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) > 0 {
+	if balanceFactor < -1 && value > tree.rightNode.value {
 		return rotateRight(tree)
 	}
 
-	if balanceFactor < -1 && cmp.Compare(value, tree.rightNode.value) < 0 {
+	if balanceFactor < -1 && value < tree.rightNode.value {
 		tree.rightNode = rotateLeft(tree.rightNode)
 		return rotateRight(tree)
 	}
