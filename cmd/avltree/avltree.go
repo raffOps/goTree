@@ -64,10 +64,10 @@ func getHeight[T cmp.Ordered](tree *AvlTree[T]) int64 {
 
 // Search returns the node with the value or nil if it is not found.
 func Search[T cmp.Ordered](tree *AvlTree[T], value T) *AvlTree[T] {
-	if tree == nil || cmp.Compare(value, tree.value) == 0 {
+	if tree == nil || value == tree.value {
 		return tree
 	}
-	if cmp.Compare(value, tree.value) < 0 {
+	if value < tree.value {
 		return Search(tree.leftNode, value)
 	}
 	return Search(tree.rightNode, value)

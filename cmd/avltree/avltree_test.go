@@ -134,6 +134,11 @@ func getSearchTestCases() []searchTestCase[int] {
 			value:     3,
 			output:    nil,
 		},
+		{
+			treeInput: &AvlTree[int]{value: 8, height: 1, rightNode: &AvlTree[int]{value: 10, height: 0}},
+			value:     10,
+			output:    &AvlTree[int]{value: 10, height: 0},
+		},
 	}
 	return testCases
 }
