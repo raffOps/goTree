@@ -25,13 +25,18 @@ jobs:
     - name: Install dependencies
       run: |
         go version
+        go install honnef.co/go/tools/cmd/staticcheck@latest
         go install golang.org/x/lint/golint@latest
-      # Run vet & lint on the code
-    - name: Run vet & lint
+        go install github.com/kisielk/errcheck@latest
+
+      # Run lints on the code
+    - name: Run lints
       run: |
         go vet ./...
         golint ./...
+        staticcheck ./...
+        errcheck ./...
 
-      # Run testing on the code
-    - name: Run testing
+      # Run tests on the code
+    - name: Run tests
       run: go test ./... -v
