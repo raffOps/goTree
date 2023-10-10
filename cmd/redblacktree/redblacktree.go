@@ -2,7 +2,7 @@ package redblacktree
 
 import "cmp"
 
-// RedBlackTree is a struct for an AVL Tree of any ordered type.
+// RedBlackTree is a struct for an Red Black Tree of any ordered type.
 // This is a self-balancing binary tree.
 // The difference between the heights of the left and right subtree cannot be more than one for all nodes.
 // For more information about theory, see https://en.wikipedia.org/wiki/Red-black_tree.
