@@ -23,8 +23,8 @@ func NewAvlTree[T cmp.Ordered]() *AvlTree[T] {
 }
 
 // String returns a string representation of the tree.
-func (tree AvlTree[T]) String() string {
-	return stringHelper[T](&tree, 0)
+func (tree *AvlTree[T]) String() string {
+	return stringHelper[T](tree, 0)
 }
 
 func stringHelper[T cmp.Ordered](tree *AvlTree[T], level int) string {
