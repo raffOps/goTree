@@ -1,6 +1,13 @@
 package redblacktree
 
-import "cmp"
+import (
+	"cmp"
+)
+
+// nodeValue is a struct that stores the value of a node
+type nodeValue[T cmp.Ordered] struct {
+	value T
+}
 
 // RedBlackTree is a struct for an Red Black Tree of any ordered type.
 // This is a self-balancing binary tree.
@@ -8,7 +15,7 @@ import "cmp"
 // For more information about theory, see https://en.wikipedia.org/wiki/Red-black_tree.
 type RedBlackTree[T cmp.Ordered] struct {
 	leftNode, rightNode *RedBlackTree[T]
-	value               T
+	value               *nodeValue[T]
 	isRed               bool
 }
 
@@ -17,9 +24,14 @@ func NewRedBlackTree[T cmp.Ordered]() *RedBlackTree[T] {
 	return &RedBlackTree[T]{}
 }
 
-// GetValue returns the value stored in the tree
+// GetValue returns the value stored in the tree.
+// If empty, returns the zero value of the type of tree
 func (tree *RedBlackTree[T]) GetValue() T {
-	return tree.value
+	if !tree.IsEmpty() {
+		return tree.value.value
+	}
+	var zeroValue T
+	return zeroValue
 }
 
 // GetChild returns the child node in the direction specified
@@ -30,11 +42,7 @@ func (tree *RedBlackTree[T]) GetChild(direction string) *RedBlackTree[T] {
 	return tree.rightNode
 }
 
-// SetChild sets the child node in the direction specified
-func (tree *RedBlackTree[T]) SetChild(direction string, node *RedBlackTree[T]) {
-	if direction == "left" {
-		tree.leftNode = node
-	} else {
-		tree.rightNode = node
-	}
+// IsEmpty checks if the tree is empty
+func (tree *RedBlackTree[T]) IsEmpty() bool {
+	return tree.value == nil
 }
