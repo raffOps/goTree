@@ -90,3 +90,87 @@ func TestRedBlackTree_GetChild(t *testing.T) {
 		}
 	}
 }
+
+func TestRedBlackTree_String(t *testing.T) {
+	// test  cases definition
+	type testCase struct {
+		tree *RedBlackTree[int]
+		want string
+	}
+	var testCases []testCase
+
+	// test case 1: root without parent
+
+	node := &RedBlackTree[int]{value: &nodeValue[int]{1}}
+	want := "\nvalue: 1, \ncolor: black, \nparentNode: , \nleftNode: , \nrightNode: "
+	testCases = append(testCases, testCase{tree: node, want: want})
+
+	// test case 2: root with parent
+
+	node0 := &RedBlackTree[int]{}
+	node1 := &RedBlackTree[int]{}
+	node2 := &RedBlackTree[int]{}
+	node3 := &RedBlackTree[int]{}
+
+	*node1 = RedBlackTree[int]{
+		value:      &nodeValue[int]{1},
+		parentNode: node2,
+	}
+
+	*node2 = RedBlackTree[int]{
+		value:      &nodeValue[int]{2},
+		leftNode:   node1,
+		rightNode:  node3,
+		parentNode: node0,
+	}
+
+	*node3 = RedBlackTree[int]{
+		value:      &nodeValue[int]{3},
+		parentNode: node2,
+	}
+
+	*node0 = RedBlackTree[int]{
+		value:      &nodeValue[int]{0},
+		rightNode:  node2,
+		parentNode: nil,
+	}
+
+	want = "\nvalue: 2, \ncolor: black, \nparentNode: 0, \nleftNode:   \nvalue: 1, \n  color: black, \n  parentNode: 2, \n  leftNode: , \n  rightNode: , \nrightNode:   \nvalue: 3, \n  color: black, \n  parentNode: 2, \n  leftNode: , \n  rightNode: "
+	testCases = append(testCases, testCase{tree: node2, want: want})
+
+	for index, testCase := range testCases {
+		got := testCase.tree.String()
+		if got != testCase.want {
+			t.Errorf("Test %d: \nWanted:\n %v\nGot:\n %v",
+				index,
+				testCase.want,
+				got,
+			)
+		}
+	}
+}
+
+func TestRedBlackTree_getColor(t *testing.T) {
+	testCases := []struct {
+		tree *RedBlackTree[int]
+		want string
+	}{
+		{
+			tree: &RedBlackTree[int]{},
+			want: "black",
+		},
+		{
+			tree: &RedBlackTree[int]{isRed: true},
+			want: "red",
+		},
+	}
+	for index, testCase := range testCases {
+		got := testCase.tree.getColor()
+		if got != testCase.want {
+			t.Errorf("Test %d: \nWanted %v\nGot %v",
+				index,
+				testCase.want,
+				got)
+		}
+	}
+}

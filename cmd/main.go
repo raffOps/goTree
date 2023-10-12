@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/rjribeiro/gotree/cmd/avltree"
+	"github.com/rjribeiro/gotree/cmd/redblacktree"
 	"math/rand"
 )
 
@@ -18,4 +19,7 @@ func main() {
 	fmt.Printf("\n%v", avltree.ToArray(tree))
 	fmt.Printf("\n%v", avltree.Search(tree, 5))
 	fmt.Printf("\n%v", avltree.Search(tree, 100))
+
+	tree2 := redblacktree.NewRedBlackTree[int]()
+	fmt.Printf("%v", tree2)
 }
