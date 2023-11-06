@@ -38,10 +38,11 @@ func TestRedBlackTree_GetValue(t *testing.T) {
 	for index, testCase := range testCases {
 		got := testCase.tree.GetValue()
 		if got != testCase.want {
-			t.Errorf("Test %d: \nWanted %v\nGot %v",
+			t.Errorf("Test %d: \nGot %v\nWanted %v",
 				index,
+				got,
 				testCase.want,
-				got)
+			)
 		}
 	}
 }
@@ -82,10 +83,10 @@ func TestRedBlackTree_GetChild(t *testing.T) {
 	for index, testCase := range testCases {
 		got := testCase.tree.GetChild(testCase.direction)
 		if !reflect.DeepEqual(got, testCase.want) {
-			t.Errorf("Test %d: \nWanted %v\nGot %v",
+			t.Errorf("Test %d: \nGot %v\nWanted %v",
 				index,
-				testCase.want,
 				got,
+				testCase.want,
 			)
 		}
 	}
@@ -141,10 +142,10 @@ func TestRedBlackTree_String(t *testing.T) {
 	for index, testCase := range testCases {
 		got := testCase.tree.String()
 		if got != testCase.want {
-			t.Errorf("Test %d: \nWanted:\n %v\nGot:\n %v",
+			t.Errorf("Test %d: \nGot %v\nWanted %v",
 				index,
-				testCase.want,
 				got,
+				testCase.want,
 			)
 		}
 	}
@@ -167,10 +168,11 @@ func TestRedBlackTree_getColor(t *testing.T) {
 	for index, testCase := range testCases {
 		got := testCase.tree.getColor()
 		if got != testCase.want {
-			t.Errorf("Test %d: \nWanted %v\nGot %v",
+			t.Errorf("Test %d: \nGot %v\nWanted %v",
 				index,
+				got,
 				testCase.want,
-				got)
+			)
 		}
 	}
 }
