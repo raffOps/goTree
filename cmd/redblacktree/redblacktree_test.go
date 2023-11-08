@@ -136,13 +136,13 @@ func TestRedBlackTree_String(t *testing.T) {
 		parentNode: nil,
 	}
 
-	want = "\nvalue: 2, \ncolor: black, \nparentNode: 0, \nleftNode:   \nvalue: 1, \n  color: black, \n  parentNode: 2, \n  leftNode: , \n  rightNode: , \nrightNode:   \nvalue: 3, \n  color: black, \n  parentNode: 2, \n  leftNode: , \n  rightNode: "
+	want = "\nvalue: 2, \ncolor: black, \nparentNode: 0, \nleftNode: \n\tvalue: 1, \n\tcolor: black, \n\tparentNode: 2, \n\tleftNode: , \n\trightNode: , \nrightNode: \n\tvalue: 3, \n\tcolor: black, \n\tparentNode: 2, \n\tleftNode: , \n\trightNode: "
 	testCases = append(testCases, testCase{tree: node2, want: want})
 
 	for index, testCase := range testCases {
 		got := testCase.tree.String()
 		if got != testCase.want {
-			t.Errorf("Test %d: \nGot %v\nWanted %v",
+			t.Errorf("Test %d: \nGot \n%v\nWanted \n%v",
 				index,
 				got,
 				testCase.want,

@@ -59,7 +59,7 @@ func stringHelper[T cmp.Ordered](tree *RedBlackTree[T], level int) string {
 		return ""
 	}
 
-	indentation := strings.Repeat("  ", level)
+	indentation := strings.Repeat("\t", level)
 
 	var parentString string
 	if tree.parentNode == nil {
@@ -68,7 +68,7 @@ func stringHelper[T cmp.Ordered](tree *RedBlackTree[T], level int) string {
 		parentString = fmt.Sprintf("%v", tree.parentNode.GetValue())
 	}
 
-	return fmt.Sprintf("%s\nvalue: %v, \n%scolor: %s, \n%sparentNode: %v, \n%sleftNode: %v, \n%srightNode: %v",
+	return fmt.Sprintf("\n%svalue: %v, \n%scolor: %s, \n%sparentNode: %v, \n%sleftNode: %v, \n%srightNode: %v",
 		indentation,
 		tree.GetValue(),
 		indentation,
