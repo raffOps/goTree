@@ -5,14 +5,32 @@ import (
 	"testing"
 )
 
+type RotateTestCase struct {
+	tree *RedBlackTree[int]
+	want *RedBlackTree[int]
+}
+
 func TestRedBlackTree_rotateToRight(t *testing.T) {
 
-	// test cases definition
-	type testCase struct {
-		tree *RedBlackTree[int]
-		want *RedBlackTree[int]
+	testCases := getRotateToRightTestCases()
+
+	// assertions
+	for index, testCase := range testCases {
+		rotatedTree := rotateToRight(testCase.tree)
+		if !reflect.DeepEqual(rotatedTree, testCase.want) {
+			t.Errorf("test case %d failed\nwant: %v\n\ngot: %v",
+				index,
+				testCase.want,
+				rotatedTree,
+			)
+		}
+
 	}
-	var testCases []testCase
+}
+
+func getRotateToRightTestCases() []RotateTestCase {
+	// test cases definition
+	var testCases []RotateTestCase
 
 	// test case 1: root is right child of his parent
 
@@ -101,7 +119,7 @@ func TestRedBlackTree_rotateToRight(t *testing.T) {
 		parentNode: nil,
 	}
 
-	testCases = append(testCases, testCase{tree: node4, want: wantNode2})
+	testCases = append(testCases, RotateTestCase{tree: node4, want: wantNode2})
 
 	// test case 2: root is left child of his parent
 
@@ -111,6 +129,7 @@ func TestRedBlackTree_rotateToRight(t *testing.T) {
 	node9 := &RedBlackTree[int]{}
 	node10 := &RedBlackTree[int]{}
 	node11 := &RedBlackTree[int]{}
+	node12 := &RedBlackTree[int]{}
 
 	*node8 = RedBlackTree[int]{
 		value:      &nodeValue[int]{8},
@@ -120,25 +139,32 @@ func TestRedBlackTree_rotateToRight(t *testing.T) {
 	*node9 = RedBlackTree[int]{
 		value:      &nodeValue[int]{9},
 		leftNode:   node8,
-		parentNode: node10,
+		rightNode:  node10,
+		parentNode: node11,
 	}
 
 	*node10 = RedBlackTree[int]{
 		value:      &nodeValue[int]{10},
-		leftNode:   node9,
-		parentNode: node11,
+		parentNode: node9,
 	}
 
 	*node11 = RedBlackTree[int]{
 		value:      &nodeValue[int]{11},
-		leftNode:   node10,
-		parentNode: nil,
+		leftNode:   node9,
+		parentNode: node12,
 	}
+
+	*node12 = RedBlackTree[int]{
+		value:    &nodeValue[int]{12},
+		leftNode: node11,
+	}
+
 	// want
 	wantNode8 := &RedBlackTree[int]{}
 	wantNode9 := &RedBlackTree[int]{}
 	wantNode10 := &RedBlackTree[int]{}
 	wantNode11 := &RedBlackTree[int]{}
+	wantNode12 := &RedBlackTree[int]{}
 
 	*wantNode8 = RedBlackTree[int]{
 		value:      &nodeValue[int]{8},
@@ -147,27 +173,37 @@ func TestRedBlackTree_rotateToRight(t *testing.T) {
 
 	*wantNode10 = RedBlackTree[int]{
 		value:      &nodeValue[int]{10},
+		parentNode: wantNode11,
+	}
+
+	*wantNode11 = RedBlackTree[int]{
+		value:      &nodeValue[int]{11},
+		leftNode:   node10,
 		parentNode: wantNode9,
 	}
 
 	*wantNode9 = RedBlackTree[int]{
 		value:      &nodeValue[int]{9},
 		leftNode:   wantNode8,
-		rightNode:  wantNode10,
-		parentNode: wantNode11,
+		rightNode:  wantNode11,
+		parentNode: wantNode12,
 	}
 
-	*wantNode11 = RedBlackTree[int]{
-		value:      &nodeValue[int]{11},
-		leftNode:   wantNode9,
-		parentNode: nil,
+	*wantNode12 = RedBlackTree[int]{
+		value:    &nodeValue[int]{12},
+		leftNode: wantNode9,
 	}
 
-	//testCases = append(testCases, testCase{tree: node10, want: wantNode9})
+	testCases = append(testCases, RotateTestCase{tree: node11, want: wantNode9})
+	return testCases
+}
+
+func TestRedBlackTree_rotateToLeft(t *testing.T) {
+	testCases := getRotateToLeftTestCases()
 
 	// assertions
 	for index, testCase := range testCases {
-		rotatedTree := rotateToRight(testCase.tree)
+		rotatedTree := rotateToLeft(testCase.tree)
 		if !reflect.DeepEqual(rotatedTree, testCase.want) {
 			t.Errorf("test case %d failed\nwant: %v\n\ngot: %v",
 				index,
@@ -175,17 +211,12 @@ func TestRedBlackTree_rotateToRight(t *testing.T) {
 				rotatedTree,
 			)
 		}
-
 	}
 }
 
-func TestRedBlackTree_rotateToLeft(t *testing.T) {
+func getRotateToLeftTestCases() []RotateTestCase {
 	// test cases definition
-	type testCase struct {
-		tree *RedBlackTree[int]
-		want *RedBlackTree[int]
-	}
-	var testCases []testCase
+	var testCases []RotateTestCase
 
 	// test case 1: root is right child of his parent
 
@@ -274,7 +305,7 @@ func TestRedBlackTree_rotateToLeft(t *testing.T) {
 		parentNode: nil,
 	}
 
-	testCases = append(testCases, testCase{tree: node2, want: wantNode4})
+	testCases = append(testCases, RotateTestCase{tree: node2, want: wantNode4})
 
 	// test case 2: root is left child of his parent
 	// tree
@@ -363,17 +394,6 @@ func TestRedBlackTree_rotateToLeft(t *testing.T) {
 		parentNode: nil,
 	}
 
-	testCases = append(testCases, testCase{tree: node2, want: wantNode4})
-
-	// assertions
-	for index, testCase := range testCases {
-		rotatedTree := rotateToLeft(testCase.tree)
-		if !reflect.DeepEqual(rotatedTree, testCase.want) {
-			t.Errorf("test case %d failed\nwant: %v\n\ngot: %v",
-				index,
-				testCase.want,
-				rotatedTree,
-			)
-		}
-	}
+	testCases = append(testCases, RotateTestCase{tree: node2, want: wantNode4})
+	return testCases
 }
