@@ -16,9 +16,9 @@ type nodeValue[T cmp.Ordered] struct {
 // The difference between the heights of the left and right subtree cannot be more than one for all nodes.
 // For more information about theory, see https://en.wikipedia.org/wiki/Red-black_tree.
 type RedBlackTree[T cmp.Ordered] struct {
-	leftNode, rightNode, parentNode *RedBlackTree[T]
-	value                           *nodeValue[T]
-	isRed                           bool
+	leftNode, rightNode *RedBlackTree[T]
+	value               *nodeValue[T]
+	isRed               bool
 }
 
 // NewRedBlackTree factory function that returns a new RedBlackTree
@@ -61,20 +61,11 @@ func stringHelper[T cmp.Ordered](tree *RedBlackTree[T], level int) string {
 
 	indentation := strings.Repeat("\t", level)
 
-	var parentString string
-	if tree.parentNode == nil {
-		parentString = ""
-	} else {
-		parentString = fmt.Sprintf("%v", tree.parentNode.GetValue())
-	}
-
-	return fmt.Sprintf("\n%svalue: %v, \n%scolor: %s, \n%sparentNode: %v, \n%sleftNode: %v, \n%srightNode: %v",
+	return fmt.Sprintf("\n%svalue: %v, \n%scolor: %s, \n%sleftNode: %v, \n%srightNode: %v",
 		indentation,
 		tree.GetValue(),
 		indentation,
 		tree.getColor(),
-		indentation,
-		parentString,
 		indentation,
 		stringHelper(tree.leftNode, level+1),
 		indentation,

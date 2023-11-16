@@ -92,53 +92,13 @@ func TestRedBlackTree_GetChild(t *testing.T) {
 	}
 }
 
+type stringTestCase struct {
+	tree *RedBlackTree[int]
+	want string
+}
+
 func TestRedBlackTree_String(t *testing.T) {
-	// test  cases definition
-	type testCase struct {
-		tree *RedBlackTree[int]
-		want string
-	}
-	var testCases []testCase
-
-	// test case 1: root without parent
-
-	node := &RedBlackTree[int]{value: &nodeValue[int]{1}}
-	want := "\nvalue: 1, \ncolor: black, \nparentNode: , \nleftNode: , \nrightNode: "
-	testCases = append(testCases, testCase{tree: node, want: want})
-
-	// test case 2: root with parent
-
-	node0 := &RedBlackTree[int]{}
-	node1 := &RedBlackTree[int]{}
-	node2 := &RedBlackTree[int]{}
-	node3 := &RedBlackTree[int]{}
-
-	*node1 = RedBlackTree[int]{
-		value:      &nodeValue[int]{1},
-		parentNode: node2,
-	}
-
-	*node2 = RedBlackTree[int]{
-		value:      &nodeValue[int]{2},
-		leftNode:   node1,
-		rightNode:  node3,
-		parentNode: node0,
-	}
-
-	*node3 = RedBlackTree[int]{
-		value:      &nodeValue[int]{3},
-		parentNode: node2,
-	}
-
-	*node0 = RedBlackTree[int]{
-		value:      &nodeValue[int]{0},
-		rightNode:  node2,
-		parentNode: nil,
-	}
-
-	want = "\nvalue: 2, \ncolor: black, \nparentNode: 0, \nleftNode: \n\tvalue: 1, \n\tcolor: black, \n\tparentNode: 2, \n\tleftNode: , \n\trightNode: , \nrightNode: \n\tvalue: 3, \n\tcolor: black, \n\tparentNode: 2, \n\tleftNode: , \n\trightNode: "
-	testCases = append(testCases, testCase{tree: node2, want: want})
-
+	testCases := getStringTestCases()
 	for index, testCase := range testCases {
 		got := testCase.tree.String()
 		if got != testCase.want {
@@ -149,6 +109,41 @@ func TestRedBlackTree_String(t *testing.T) {
 			)
 		}
 	}
+}
+
+func getStringTestCases() []stringTestCase {
+	var testCases []stringTestCase
+
+	// test case 1: root without parent
+
+	node := &RedBlackTree[int]{value: &nodeValue[int]{1}}
+	want := "\nvalue: 1, \ncolor: black, \nleftNode: , \nrightNode: "
+	testCases = append(testCases, stringTestCase{tree: node, want: want})
+
+	// test case 2: root with parent
+
+	node0 := &RedBlackTree[int]{
+		value: &nodeValue[int]{1},
+	}
+
+	node2 := &RedBlackTree[int]{
+		value: &nodeValue[int]{3},
+	}
+
+	node1 := &RedBlackTree[int]{
+		value:     &nodeValue[int]{2},
+		leftNode:  node0,
+		rightNode: node2,
+	}
+
+	node3 := &RedBlackTree[int]{
+		value:    &nodeValue[int]{4},
+		leftNode: node1,
+	}
+
+	want = "\nvalue: 4, \ncolor: black, \nleftNode: \n\tvalue: 2, \n\tcolor: black, \n\tleftNode: \n\t\tvalue: 1, \n\t\tcolor: black, \n\t\tleftNode: , \n\t\trightNode: , \n\trightNode: \n\t\tvalue: 3, \n\t\tcolor: black, \n\t\tleftNode: , \n\t\trightNode: , \nrightNode: "
+	testCases = append(testCases, stringTestCase{tree: node3, want: want})
+	return testCases
 }
 
 func TestRedBlackTree_getColor(t *testing.T) {
