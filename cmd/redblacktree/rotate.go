@@ -9,6 +9,9 @@ func rotateToRight[T cmp.Ordered](tree *RedBlackTree[T]) *RedBlackTree[T] {
 	tree.leftNode = rotatedTree.rightNode
 	rotatedTree.rightNode = tree
 
+	rotatedTree.isRed = tree.isRed
+	tree.isRed = true
+
 	return rotatedTree
 }
 
@@ -18,6 +21,9 @@ func rotateToLeft[T cmp.Ordered](tree *RedBlackTree[T]) *RedBlackTree[T] {
 	rotatedTree := tree.rightNode
 	tree.rightNode = rotatedTree.leftNode
 	rotatedTree.leftNode = tree
+
+	rotatedTree.isRed = tree.isRed
+	tree.isRed = true
 
 	return rotatedTree
 }

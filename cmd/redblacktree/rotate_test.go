@@ -32,41 +32,36 @@ func getRotateToRightTestCases() []RotateTestCase {
 	// tree
 	node0 := &RedBlackTree[int]{
 		value: &nodeValue[int]{0},
+		isRed: true,
 	}
 
 	node1 := &RedBlackTree[int]{
 		value:    &nodeValue[int]{1},
 		leftNode: node0,
-	}
-
-	node3 := &RedBlackTree[int]{
-		value: &nodeValue[int]{3},
+		isRed:    true,
 	}
 
 	node2 := &RedBlackTree[int]{
-		value:     &nodeValue[int]{2},
-		leftNode:  node1,
-		rightNode: node3,
+		value:    &nodeValue[int]{2},
+		leftNode: node1,
 	}
 
 	// want
 	wantNode0 := &RedBlackTree[int]{
 		value: &nodeValue[int]{0},
-	}
-
-	wantNode3 := &RedBlackTree[int]{
-		value: &nodeValue[int]{3},
+		isRed: true,
 	}
 
 	wantNode2 := &RedBlackTree[int]{
-		value:     &nodeValue[int]{2},
-		rightNode: wantNode3,
+		value: &nodeValue[int]{2},
+		isRed: true,
 	}
 
 	wantNode1 := &RedBlackTree[int]{
 		value:     &nodeValue[int]{1},
 		leftNode:  wantNode0,
 		rightNode: wantNode2,
+		isRed:     false,
 	}
 
 	testCases = append(testCases, RotateTestCase{tree: node2, want: wantNode1})
@@ -95,45 +90,30 @@ func getRotateToLeftTestCases() []RotateTestCase {
 	var testCases []RotateTestCase
 
 	// tree
-	node0 := &RedBlackTree[int]{
-		value: &nodeValue[int]{0},
-	}
-
-	node3 := &RedBlackTree[int]{
-		value: &nodeValue[int]{3},
-	}
-
-	node2 := &RedBlackTree[int]{
-		value:     &nodeValue[int]{2},
-		rightNode: node3,
-	}
 
 	node1 := &RedBlackTree[int]{
-		value:     &nodeValue[int]{1},
-		leftNode:  node0,
-		rightNode: node2,
+		value: &nodeValue[int]{1},
+		isRed: true,
+	}
+
+	node0 := &RedBlackTree[int]{
+		value:     &nodeValue[int]{0},
+		isRed:     false,
+		rightNode: node1,
 	}
 
 	// want
 	wantNode0 := &RedBlackTree[int]{
 		value: &nodeValue[int]{0},
+		isRed: true,
 	}
 
 	wantNode1 := &RedBlackTree[int]{
 		value:    &nodeValue[int]{1},
+		isRed:    false,
 		leftNode: wantNode0,
 	}
 
-	wantNode3 := &RedBlackTree[int]{
-		value: &nodeValue[int]{3},
-	}
-
-	wantNode2 := &RedBlackTree[int]{
-		value:     &nodeValue[int]{2},
-		leftNode:  wantNode1,
-		rightNode: wantNode3,
-	}
-
-	testCases = append(testCases, RotateTestCase{tree: node1, want: wantNode2})
+	testCases = append(testCases, RotateTestCase{tree: node0, want: wantNode1})
 	return testCases
 }
