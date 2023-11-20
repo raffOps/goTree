@@ -32,7 +32,7 @@ func insertHelper[T cmp.Ordered](tree *RedBlackTree[T], value T) *RedBlackTree[T
 		tree = rotateToLeft(tree)
 	}
 
-	if tree.leftNode.isRed && tree.leftNode.leftNode != nil && tree.leftNode.leftNode.isRed {
+	if tree.leftNode.isRed && tree.leftNode.leftNode.isRed {
 		tree = rotateToRight(tree)
 	}
 
