@@ -76,9 +76,9 @@ func TestInsert(t *testing.T) {
 	testCases := getInsertTestCases()
 
 	for index, testCase := range testCases {
-		Insert(testCase.tree, testCase.value)
-		if !reflect.DeepEqual(testCase.tree, testCase.want) {
-			t.Errorf("test case %v: got \n%v \nwant \n%v", index, testCase.tree, testCase.want)
+		got := Insert(testCase.tree, testCase.value)
+		if !reflect.DeepEqual(got, testCase.want) {
+			t.Errorf("test case %v: \ngot \n%v \nwant \n%v", index, testCase.tree, testCase.want)
 		}
 	}
 }
@@ -92,37 +92,49 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 	tree = &RedBlackTree[int]{}
 	value = 3
 	want = &RedBlackTree[int]{
-		value: &nodeValue[int]{value: 3},
-		isRed: false,
+		value:     &nodeValue[int]{value: 3},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
+		isRed:     false,
 	}
 	testCases = append(testCases, insertTestCase[int]{tree, value, want})
 
 	// test case 2: value lesser than root value.
 	tree = &RedBlackTree[int]{
-		value: &nodeValue[int]{value: 3},
+		value:     &nodeValue[int]{value: 3},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
 	}
 	value = 2
 	want = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 3},
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 2},
-			isRed: true,
+			value:     &nodeValue[int]{value: 2},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	testCases = append(testCases, insertTestCase[int]{tree, value, want})
 
 	// test case 3: value greater than root value.
 	tree = &RedBlackTree[int]{
-		value: &nodeValue[int]{value: 3},
+		value:     &nodeValue[int]{value: 3},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
 	}
 	value = 4
 	want = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 4},
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 3},
-			isRed: true,
+			value:     &nodeValue[int]{value: 3},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	testCases = append(testCases, insertTestCase[int]{tree, value, want})
@@ -132,9 +144,12 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 	tree = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 3},
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 2},
-			isRed: true,
+			value:     &nodeValue[int]{value: 2},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	value = 4
@@ -142,12 +157,16 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 		value: &nodeValue[int]{value: 3},
 		isRed: false,
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 2},
-			isRed: false,
+			value:     &nodeValue[int]{value: 2},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
 		rightNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 4},
-			isRed: false,
+			value:     &nodeValue[int]{value: 4},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
 	}
 
@@ -158,9 +177,12 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 	tree = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 3},
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 2},
-			isRed: true,
+			value:     &nodeValue[int]{value: 2},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	value = 1
@@ -168,12 +190,16 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 		value: &nodeValue[int]{value: 2},
 		isRed: false,
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 1},
-			isRed: false,
+			value:     &nodeValue[int]{value: 1},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
 		rightNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 3},
-			isRed: false,
+			value:     &nodeValue[int]{value: 3},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
 	}
 
@@ -184,22 +210,55 @@ func getInsertTestCases() (testCases []insertTestCase[int]) {
 	tree = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 3},
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 1},
-			isRed: true,
+			value:     &nodeValue[int]{value: 1},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+		rightNode: NewRedBlackTree[int](),
 	}
 	value = 2
 	want = &RedBlackTree[int]{
 		value: &nodeValue[int]{value: 2},
 		isRed: false,
 		leftNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 1},
-			isRed: false,
+			value:     &nodeValue[int]{value: 1},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
 		rightNode: &RedBlackTree[int]{
-			value: &nodeValue[int]{value: 3},
-			isRed: false,
+			value:     &nodeValue[int]{value: 3},
+			isRed:     false,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
 		},
+	}
+
+	testCases = append(testCases, insertTestCase[int]{tree, value, want})
+
+	// test case 7: value already in tree.
+	// tree
+	tree = &RedBlackTree[int]{
+		value: &nodeValue[int]{value: 3},
+		leftNode: &RedBlackTree[int]{
+			value:     &nodeValue[int]{value: 1},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
+		},
+		rightNode: NewRedBlackTree[int](),
+	}
+	value = 1
+	want = &RedBlackTree[int]{
+		value: &nodeValue[int]{value: 3},
+		leftNode: &RedBlackTree[int]{
+			value:     &nodeValue[int]{value: 1},
+			isRed:     true,
+			leftNode:  NewRedBlackTree[int](),
+			rightNode: NewRedBlackTree[int](),
+		},
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	testCases = append(testCases, insertTestCase[int]{tree, value, want})
