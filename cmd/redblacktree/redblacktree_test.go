@@ -116,18 +116,26 @@ func getStringTestCases() []stringTestCase {
 
 	// test case 1: root without parent
 
-	node := &RedBlackTree[int]{value: &nodeValue[int]{1}}
+	node := &RedBlackTree[int]{
+		value:     &nodeValue[int]{1},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
+	}
 	want := "\nvalue: 1, \ncolor: black, \nleftNode: , \nrightNode: "
 	testCases = append(testCases, stringTestCase{tree: node, want: want})
 
 	// test case 2: root with parent
 
 	node0 := &RedBlackTree[int]{
-		value: &nodeValue[int]{1},
+		value:     &nodeValue[int]{1},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	node2 := &RedBlackTree[int]{
-		value: &nodeValue[int]{3},
+		value:     &nodeValue[int]{3},
+		leftNode:  NewRedBlackTree[int](),
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	node1 := &RedBlackTree[int]{
@@ -137,8 +145,9 @@ func getStringTestCases() []stringTestCase {
 	}
 
 	node3 := &RedBlackTree[int]{
-		value:    &nodeValue[int]{4},
-		leftNode: node1,
+		value:     &nodeValue[int]{4},
+		leftNode:  node1,
+		rightNode: NewRedBlackTree[int](),
 	}
 
 	want = "\nvalue: 4, \ncolor: black, \nleftNode: \n\tvalue: 2, \n\tcolor: black, \n\tleftNode: \n\t\tvalue: 1, \n\t\tcolor: black, \n\t\tleftNode: , \n\t\trightNode: , \n\trightNode: \n\t\tvalue: 3, \n\t\tcolor: black, \n\t\tleftNode: , \n\t\trightNode: , \nrightNode: "

@@ -55,7 +55,7 @@ func (tree *RedBlackTree[T]) String() string {
 }
 
 func stringHelper[T cmp.Ordered](tree *RedBlackTree[T], level int) string {
-	if tree == nil {
+	if tree.IsEmpty() {
 		return ""
 	}
 
