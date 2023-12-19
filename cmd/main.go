@@ -24,7 +24,7 @@ func main() {
 
 	tree := redblacktree.NewRedBlackTree[int]()
 	r := rand.New(rand.NewSource(1))
-	arr := r.Perm(10)
+	arr := r.Perm(100)
 	for _, value := range arr {
 		fmt.Printf("%d  ", value)
 		tree = redblacktree.Insert(tree, value)
